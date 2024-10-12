@@ -1,0 +1,8 @@
+Array
+(
+    [first_name] => Ashley
+    [last_name] => Sanguyo
+    [email] => ashleysanguyo14@gmail.com
+)
+{"first_name":"Ashley","last_name":"Sanguyo","email":"ashleysanguyo14@gmail.com"}
+{"first_name":"Ashley","last_name":"Sanguyo","email":"ashleysanguyo14@gmail.com"}

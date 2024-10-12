@@ -1,0 +1,10 @@
+import pickle
+from sklearn.ensemble import RandomForestClassifier  # Example model
+
+# Assume `X` is your feature set and `y` is your labels
+model = RandomForestClassifier()
+model.fit(X, y)
+
+# Save the model
+with open('risk_model.pkl', 'wb') as file:
+    pickle.dump(model, file)
