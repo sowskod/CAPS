@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!mysqli_query($con, $query)) {
                     echo "Error saving score: " . mysqli_error($con);
                 }
-                
+
                 $scoresDeletedActivities[] = $activityId;
             }
         }
@@ -104,6 +104,7 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
 <!-- HTML Part -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -150,7 +151,8 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
             vertical-align: middle;
         }
 
-        .add-student-form, .view {
+        .add-student-form,
+        .view {
             display: inline-block;
             padding: 10px 20px;
             margin-bottom: 20px;
@@ -160,7 +162,8 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
             text-align: center;
         }
 
-        .add-student-form:hover, .view:hover {
+        .add-student-form:hover,
+        .view:hover {
             background-color: #2980b9;
         }
 
@@ -176,7 +179,7 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
 
         form input[type="file"] {
             margin-bottom: 10px;
-            
+
         }
 
         form button {
@@ -202,11 +205,14 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
             margin-bottom: 20px;
         }
 
-        table, th, td {
+        table,
+        th,
+        td {
             border: 1px solid #ddd;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: left;
         }
@@ -237,110 +243,115 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
                 font-size: 14px;
             }
 
-            th, td {
+            th,
+            td {
                 padding: 8px;
             }
         }
     </style>
 </head>
-<body >
-<a href="homepage.php" style="position: absolute; top: 0px; left: 20px; text-decoration: none; color: black;">
-    <svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Outer circle -->
-        <circle cx="12" cy="12" r="10" fill="#F7F7F7" stroke="black" stroke-width="2"/>
-        <!-- Inner arrow shape -->
-        <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-</a>
 
-        <br>
-        <br>
-        <br>
-        <br>
-      
-        
-<a href="add_student.php?section_id=<?php echo htmlspecialchars($sectionId); ?>" class="add-student-form">Add New Student</a>
-<button type="button" onclick="window.location.href='most_at_risk.php?section_id=<?php echo $sectionId; ?>'"class="view">View MOST at Risk</button>
-<form method="POST" action="upload_students.php?section_id=<?php echo $sectionId; ?>" enctype="multipart/form-data">
-    <label for="file">Upload Excel File:</label>
-    <input type="file" name="file" id="file" accept=".xlsx, .xls">
-    <button type="submit">Upload</button>
-</form>
-<form method="POST" action="student.php?section_id=<?php echo $sectionId; ?>">
-    <h3>Add Activity</h3>
-    <label for="activity_type">Activity Type:</label>
-    <select name="activity_type" id="activity_type" required>
-        <option value="quiz">Quiz</option>
-        <option value="exam">Exam</option>
-        <option value="activity">Activity</option>
-        <option value="attendance">Attendance</option>
-    </select>
-    <label for="total_score">Total Score:</label>
-    <input type="number" name="total_score" id="total_score" placeholder="Input Total or over score" required>
-    <button type="submit" name="add_activity">Add Activity</button>
-</form>
+<body>
+    <a href="homepage.php" style="position: absolute; top: 0px; left: 20px; text-decoration: none; color: black;">
+        <svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Outer circle -->
+            <circle cx="12" cy="12" r="10" fill="#F7F7F7" stroke="black" stroke-width="2" />
+            <!-- Inner arrow shape -->
+            <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </a>
+
+    <br>
+    <br>
+    <br>
+    <br>
 
 
-
-<div class="students">
-<h2>Students in Section <?php echo htmlspecialchars($sectionName); ?></h2>
-
+    <a href="add_student.php?section_id=<?php echo htmlspecialchars($sectionId); ?>" class="add-student-form">Add New Student</a>
+    <button type="button" onclick="window.location.href='most_at_risk.php?section_id=<?php echo $sectionId; ?>'" class="view">View MOST at Risk</button>
+    <form method="POST" action="upload_students.php?section_id=<?php echo $sectionId; ?>" enctype="multipart/form-data">
+        <label for="file">Upload Excel File:</label>
+        <input type="file" name="file" id="file" accept=".xlsx, .xls">
+        <button type="submit">Upload</button>
+    </form>
     <form method="POST" action="student.php?section_id=<?php echo $sectionId; ?>">
-        <table>
-            <thead>
-                <tr>
-                    <th>Student Name</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                    <th>Program</th>
-                    <th>Course</th>
+        <h3>Add Activity</h3>
+        <label for="activity_type">Activity Type:</label>
+        <select name="activity_type" id="activity_type" required>
+            <option value="quiz">Quiz</option>
+            <option value="exam">Exam</option>
+            <option value="activity">Activity</option>
+            <option value="attendance">Attendance</option>
+        </select>
+        <label for="total_score">Total Score:</label>
+        <input type="number" name="total_score" id="total_score" placeholder="Input Total or over score" required>
+        <button type="submit" name="add_activity">Add Activity</button>
+    </form>
+
+
+
+    <div class="students">
+        <h2>Students in Section <?php echo htmlspecialchars($sectionName); ?></h2>
+
+        <form method="POST" action="student.php?section_id=<?php echo $sectionId; ?>">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Program</th>
+                        <th>Course</th>
+                        <th>timestamp</th>
+                        <?php
+                        // Reset activities result pointer for score input
+                        mysqli_data_seek($activitiesResult, 0);
+                        while ($activity = mysqli_fetch_assoc($activitiesResult)) :
+                        ?>
+                            <th><?php echo htmlspecialchars($activity['activity_type']); ?> (<?php echo htmlspecialchars($activity['total_score']); ?>)</th>
+                        <?php endwhile; ?>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
                     <?php
                     // Reset activities result pointer for score input
                     mysqli_data_seek($activitiesResult, 0);
-                    while ($activity = mysqli_fetch_assoc($activitiesResult)) :
+                    while ($student = mysqli_fetch_assoc($studentsResult)) :
                     ?>
-                        <th><?php echo htmlspecialchars($activity['activity_type']); ?> (<?php echo htmlspecialchars($activity['total_score']); ?>)</th>
+                        <tr>
+                            <td><?php echo htmlspecialchars($student['student_name']); ?></td>
+                            <td><?php echo htmlspecialchars($student['email']); ?></td>
+                            <td><?php echo htmlspecialchars($student['cp_number']); ?></td>
+                            <td><?php echo htmlspecialchars($student['program']); ?></td>
+                            <td><?php echo htmlspecialchars($student['course']); ?></td>
+                            <td><?php echo htmlspecialchars($student['timestamp']); ?></td>
+                            <?php
+                            // Reset activities result pointer to start
+                            mysqli_data_seek($activitiesResult, 0);
+                            while ($activity = mysqli_fetch_assoc($activitiesResult)) :
+                                $activityId = $activity['id'];
+                                $score = isset($scores[$student['id']][$activityId]) ? $scores[$student['id']][$activityId] : '';
+                            ?>
+                                <td>
+                                    <input type="number" name="scores[<?php echo $student['id']; ?>][<?php echo $activityId; ?>]" value="<?php echo htmlspecialchars($score); ?>" min="0" max="<?php echo $activity['total_score']; ?>" />
+                                </td>
+                            <?php endwhile; ?>
+                            <td class='actions'>
+                                <a href='edit_student.php?id=<?php echo $student['id']; ?>'>Edit</a>
+                                <a href='delete_student.php?id=<?php echo $student['id']; ?>' class='delete' onclick='return confirm("Are you sure?")'>Delete</a>
+                                <a href='student_records.php?student_id=<?php echo $student['id']; ?>'>Records</a>
+                            </td>
+                        </tr>
                     <?php endwhile; ?>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php
-            // Reset activities result pointer for score input
-            mysqli_data_seek($activitiesResult, 0);
-            while ($student = mysqli_fetch_assoc($studentsResult)) :
-            ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($student['student_name']); ?></td>
-                    <td><?php echo htmlspecialchars($student['email']); ?></td>
-                    <td><?php echo htmlspecialchars($student['cp_number']); ?></td>
-                    <td><?php echo htmlspecialchars($student['program']); ?></td>
-                    <td><?php echo htmlspecialchars($student['course']); ?></td>
-                    <?php
-                    // Reset activities result pointer to start
-                    mysqli_data_seek($activitiesResult, 0);
-                    while ($activity = mysqli_fetch_assoc($activitiesResult)) :
-                        $activityId = $activity['id'];
-                        $score = isset($scores[$student['id']][$activityId]) ? $scores[$student['id']][$activityId] : '';
-                    ?>
-                        <td>
-                            <input type="number" name="scores[<?php echo $student['id']; ?>][<?php echo $activityId; ?>]" value="<?php echo htmlspecialchars($score); ?>" min="0" max="<?php echo $activity['total_score']; ?>" />
-                        </td>
-                    <?php endwhile; ?>
-                    <td class='actions'>
-                        <a href='edit_student.php?id=<?php echo $student['id']; ?>'>Edit</a>
-                        <a href='delete_student.php?id=<?php echo $student['id']; ?>' class='delete' onclick='return confirm("Are you sure?")'>Delete</a>
-                        <a href='student_records.php?student_id=<?php echo $student['id']; ?>'>Records</a>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-            </tbody>
-        </table>
-        <button type="submit" name="save_scores">Save Scores</button>
-    </form>
-   
+                </tbody>
+            </table>
+            <button type="submit" name="save_scores">Save Scores</button>
+        </form>
 
-</div>
+
+    </div>
 
 </body>
+
 </html>

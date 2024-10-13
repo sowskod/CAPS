@@ -33,7 +33,7 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
             $rows = $worksheet->toArray();
 
             // Prepare to insert data
-            $stmt = $con->prepare("INSERT INTO students (user_id, section_id, student_name, email, courses, sections) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt = $con->prepare("INSERT INTO students (user_id, section_id, student_name, email, courses, sections, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
             foreach ($rows as $index => $row) {
                 // Skip header row
@@ -41,10 +41,10 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
                     continue;
                 }
 
-                list($studentName, $email, $courses, $sections) = $row;
+                list($timestamp, $studentId, $studentName, $Gender, $email, $courses, $sections) = $row;
 
                 // Bind parameters and execute query
-                $stmt->bind_param('iissss', $userId, $sectionId, $studentName, $email, $courses, $sections);
+                $stmt->bind_param('iisssss', $userId, $sectionId, $studentName, $email, $courses, $sections, $timestamp);
                 $stmt->execute();
             }
 
@@ -58,4 +58,3 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
 } else {
     echo "No file uploaded or upload error.";
 }
-?>
