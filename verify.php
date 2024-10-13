@@ -1,7 +1,8 @@
 <?php
 include 'db.php';
 
-function generateRandomCode($length = 5) {
+function generateRandomCode($length = 5)
+{
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $code = '';
 
@@ -17,9 +18,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-require 'C:\Xampp\htdocs\PHPMailer\PHPMailer\src\Exception.php';
-require 'C:\Xampp\htdocs\PHPMailer\PHPMailer\src\PHPMailer.php';
-require 'C:\Xampp\htdocs\PHPMailer\PHPMailer\src\SMTP.php';
+require 'C:\xampp\htdocs\idrop\PHPMailer\src\Exception.php';
+require 'C:\xampp\htdocs\idrop\PHPMailer\src\PHPMailer.php';
+require 'C:\xampp\htdocs\idrop\PHPMailer\src\SMTP.php';
 
 $mail = new PHPMailer(true);
 
@@ -30,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
     $address = $_POST['address'];
-    
+
 
     $confirmationCode = generateRandomCode();
 
@@ -47,9 +48,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 VALUES ('$firstname', '$lastname', '$subject', '$email', '$password', '$address',  '$confirmationCode')";
 
         if (mysqli_query($con, $sql)) {
-         
+
             try {
-		echo '<script>alert("Please Check your Email for Confirmation");window.location.href = "confirm_account.php";</script>';
+                echo '<script>alert("Please Check your Email for Confirmation");window.location.href = "confirm_account.php";</script>';
                 // Server settings for PHPMailer
                 $mail->SMTPDebug = SMTP::DEBUG_SERVER;
                 $mail->isSMTP();
@@ -82,4 +83,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 mysqli_close($con);
-?>

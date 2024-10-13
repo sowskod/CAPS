@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -21,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $studentEmail = mysqli_real_escape_string($con, $_POST['student_email']);
         $query = "INSERT INTO students (user_id, section_id, student_name, email) VALUES ($userId, $sectionId, '$studentName', '$studentEmail')";
         if (mysqli_query($con, $query)) {
-            echo '<script>alert("Student added successfully!");window.location.href = "student.php?section_id=' . $sectionId . '";</script>';
+            echo '<script>alert("Student added successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
         } else {
             echo "Error adding student: " . mysqli_error($con);
         }
@@ -32,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $totalScore = intval($_POST['total_score']);
         $query = "INSERT INTO activities (section_id, user_id, activity_type, total_score) VALUES ($sectionId, $userId, '$activityType', $totalScore)";
         if (mysqli_query($con, $query)) {
-            echo '<script>alert("Activity added successfully!");window.location.href = "student.php?section_id=' . $sectionId . '";</script>';
+            echo '<script>alert("Activity added successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
         } else {
             echo "Error adding activity: " . mysqli_error($con);
         }
@@ -58,13 +57,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!empty($scoresDeletedActivities)) {
             $activityIds = implode(',', array_unique($scoresDeletedActivities));
-            $updateActivitiesQuery = "UPDATE activities SET displayed = 0 WHERE id IN ($activityIds)";
+            $updateActivitiesQuery = "UPDATE activities SET displayed s= 0 WHERE id IN ($activityIds)";
             if (!mysqli_query($con, $updateActivitiesQuery)) {
                 echo "Error updating activities display status: " . mysqli_error($con);
             }
         }
 
-        echo '<script>alert("Scores saved and activities updated successfully!");window.location.href = "student.php?section_id=' . $sectionId . '";</script>';
+        echo '<script>alert("Scores saved and activities updated successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
     }
 }
 
@@ -252,7 +251,7 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
 </head>
 
 <body>
-    <a href="homepage.php" style="position: absolute; top: 0px; left: 20px; text-decoration: none; color: black;">
+    <a href="page.php" style="position: absolute; top: 0px; left: 20px; text-decoration: none; color: black;">
         <svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <!-- Outer circle -->
             <circle cx="12" cy="12" r="10" fill="#F7F7F7" stroke="black" stroke-width="2" />
@@ -299,10 +298,6 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
                     <tr>
                         <th>Student Name</th>
                         <th>Email</th>
-                        <th>Phone Number</th>
-                        <th>Program</th>
-                        <th>Course</th>
-                        <th>timestamp</th>
                         <?php
                         // Reset activities result pointer for score input
                         mysqli_data_seek($activitiesResult, 0);
@@ -322,10 +317,6 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
                         <tr>
                             <td><?php echo htmlspecialchars($student['student_name']); ?></td>
                             <td><?php echo htmlspecialchars($student['email']); ?></td>
-                            <td><?php echo htmlspecialchars($student['cp_number']); ?></td>
-                            <td><?php echo htmlspecialchars($student['program']); ?></td>
-                            <td><?php echo htmlspecialchars($student['course']); ?></td>
-                            <td><?php echo htmlspecialchars($student['timestamp']); ?></td>
                             <?php
                             // Reset activities result pointer to start
                             mysqli_data_seek($activitiesResult, 0);

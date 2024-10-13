@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $updateQuery = "UPDATE students SET student_name='$studentName', email='$studentEmail', cp_number='$cpNumber', program='$program', course='$course' WHERE id=$studentId AND user_id = $userId";
 
     if (mysqli_query($con, $updateQuery)) {
-        echo '<script>alert("Student updated successfully!");window.location.href = "student.php?section_id=' . $student['section_id'] . '";</script>';
+        echo '<script>alert("Student updated successfully!");window.location.href = "page.php?student&section_id=' . $student['section_id'] . '";</script>';
     } else {
         echo "Error updating student: " . mysqli_error($con);
     }
@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -132,28 +133,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <h2>Edit Student</h2>
-    <form method="POST" action="">
-        <label for="student_name">Student Name:</label>
-        <input type="text" id="student_name" name="student_name" value="<?php echo htmlspecialchars($student['student_name']); ?>" required>
+    <div class="container">
+        <h2>Edit Student</h2>
+        <form method="POST" action="">
+            <label for="student_name">Student Name:</label>
+            <input type="text" id="student_name" name="student_name" value="<?php echo htmlspecialchars($student['student_name']); ?>" required>
 
-        <label for="student_email">Student Email:</label>
-        <input type="email" id="student_email" name="student_email" value="<?php echo htmlspecialchars($student['email']); ?>" required>
+            <label for="student_email">Student Email:</label>
+            <input type="email" id="student_email" name="student_email" value="<?php echo htmlspecialchars($student['email']); ?>" required>
 
-        <label for="cp_number">Cellphone Number:</label>
-        <input type="text" id="cp_number" name="cp_number" value="<?php echo htmlspecialchars($student['cp_number']); ?>" required>
+            <label for="cp_number">Cellphone Number:</label>
+            <input type="text" id="cp_number" name="cp_number" value="<?php echo htmlspecialchars($student['cp_number']); ?>" required>
 
-        <label for="program">Program:</label>
-        <input type="text" id="program" name="program" value="<?php echo htmlspecialchars($student['program']); ?>" required>
+            <label for="program">Program:</label>
+            <input type="text" id="program" name="program" value="<?php echo htmlspecialchars($student['program']); ?>" required>
 
-        <label for="course">Course:</label>
-        <input type="text" id="course" name="course" value="<?php echo htmlspecialchars($student['course']); ?>" required>
+            <label for="course">Course:</label>
+            <input type="text" id="course" name="course" value="<?php echo htmlspecialchars($student['course']); ?>" required>
 
-        <button type="submit">Update Student</button>
-    </form>
-    <a href="student.php?section_id=<?php echo htmlspecialchars($student['section_id']); ?>">Back to Students List</a>
-</div>
+            <button type="submit">Update Student</button>
+        </form>
+        <a href="page.php?student&section_id=<?php echo htmlspecialchars($student['section_id']); ?>">Back to Students List</a>
+    </div>
 </body>
+
 </html>

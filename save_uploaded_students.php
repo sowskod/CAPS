@@ -39,8 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['students'])) {
     }
 
     // After successful insert, redirect to the student page with a success message
-    echo '<script>alert("Students saved successfully!");window.location.href = "student.php?section_id=' . $sectionId . '";</script>';
+    echo '<script>alert("Students saved successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
 } else {
     echo "No student data to save.";
 }
-?>

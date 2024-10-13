@@ -1,305 +1,307 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign In</title>
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+      /* General styling */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #000;
+        color: #fff;
+      }
+      a {
+        all: unset;
+      }
+      /* Login container */
+      .login-container {
+        width: 30%;
+        margin: 100px auto;
+        padding: 30px;
+        background-color: #1a1a1a;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      }
 
-	<style>
-/* General styling */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #000; /* Set black background */
-}
+      .login-container img.logo {
+        display: block;
+        margin: 0 auto 20px;
+        width: 150px;
+        height: auto;
+        border-radius: 15px;
+      }
 
-/* Login container */
-.login-container {
-    width: 40%;
-    margin: 100px auto;
-    padding: 30px;
-    background-color: #000;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    color: #fff;
-}
+      .login-container h2 {
+        margin-bottom: 10px;
+      }
 
-.login-container img.logo {
-    display: block;
-    margin: 0 auto 20px;
-    width: 150px; /* Adjust size as needed */
-    height: auto;
-}
+      .login-container p {
+        all: unset;
+        color: #6d6c6c;
+        margin-bottom: 20px;
+      }
 
-.login-container h2 {
-    margin-bottom: 10px;
-}
+      .login-container input[type="email"],
+      .login-container input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background-color: #333;
+        color: #fff;
+        box-sizing: border-box;
+      }
 
-.login-container p {
-    margin-bottom: 20px;
-}
+      .login-container input[type="email"]:focus,
+      .login-container input[type="password"]:focus {
+        outline: none;
+        border-color: #007bff;
+      }
 
-.login-container label {
-    display: block;
-    text-align: left;
-}
+      .btn-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        gap: 10px;
+      }
 
-.login-container input[type="email"],
-.login-container input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #666;
-    border-radius: 5px;
-    background-color: #333;
-    color: #fff;
-}
+      .btn-container button,
+      .btn-container a {
+        padding: 12px;
+        width: 48%;
+        border-radius: 5px;
+        text-align: center;
+        background-color: #046c2d;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+        font-weight: bold;
+      }
 
-.login-container .btn-container {
-    display: flex;
-    justify-content: space-between;
-}
+      .btn-container button:hover,
+      .btn-container a:hover {
+        background-color: #044a1c;
+      }
 
-.login-container .btn-container button {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    background-color: #046c2d;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+      .login-container a:hover {
+        text-decoration: underline;
+      }
 
-.login-container .btn-container button:hover {
-    background-color: #044a1c;
-}
+      /* Light mode styling */
+      body.light-mode {
+        background-color: #f0f0f0;
+        color: #000;
+      }
+      a.light-mode {
+        color: #000;
+      }
+      a.light-mode {
+        color: #000;
+      }
+      .login-container.light-mode {
+        background-color: #fff;
+        color: #000;
+      }
+      .imglight-mode {
+        filter: invert(1);
+      }
 
-.login-container a {
-    display: block;
-    flex: 1;
-    margin-top: 10px;
-    color: #fff;
-    text-decoration: none;
-}
+      .login-container.light-mode input[type="email"],
+      .login-container.light-mode input[type="password"] {
+        background-color: #fff;
+        color: #000;
+        border: 1px solid #ccc;
+      }
 
-.login-container a:hover {
-    text-decoration: underline;
-}
-
-        /* Light mode styling */
-        body.light-mode {
-            background-color: #f0f0f0;
-            color: #000;
-        }
-
-        .login-container.light-mode {
-            background-color: #fff;
-            color: #000;
-        }
-
-        .login-container.light-mode input[type="email"],
-        .login-container.light-mode input[type="password"] {
-            background-color: #fff;
-            color: #000;
-            border: 1px solid #ccc;
-        }
-
-        .login-container.light-mode a {
-            color: #000;
-        }
-
-        .login-container.light-mode .btn-container button {
-            background-color: #046c2d;
-            color: #fff;
-        }
-
-        .login-container.light-mode .btn-container button:hover {
-            background-color: #044a1c;
-        }
-
-	  /* Toggle switch styling */
+      /* Toggle switch styling */
       .switch {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
 
-        .switch input {
-            display: none;
-        }
+      .switch input {
+        display: none;
+      }
 
-        .slider {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
+      .slider {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
 
-        .slider::before {
-            content: "Light";
-            position: absolute;
-            left: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #000;
-            font-size: 14px;
-            transition: color 0.3s;
-        }
+      .slider::before {
+        content: "Light";
+        position: absolute;
+        left: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #000;
+        font-size: 14px;
+        transition: color 0.3s;
+      }
 
-        .slider::after {
-            content: "Dark";
-            position: absolute;
-            right: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #fff;
-            font-size: 14px;
-            transition: color 0.3s;
-        }
+      .slider::after {
+        content: "Dark";
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #fff;
+        font-size: 14px;
+        transition: color 0.3s;
+      }
 
-        .slider .toggle {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
+      .slider .toggle {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
 
-        .slider .toggle:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
+      .slider .toggle:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
 
-        input:checked + .slider .toggle {
-            background-color: #2196F3;
-        }
+      input:checked + .slider .toggle {
+        background-color: #2196f3;
+      }
 
-        input:checked + .slider .toggle:before {
-            transform: translateX(26px);
-        }
-        
-	</style>
-</head>
+      input:checked + .slider .toggle:before {
+        transform: translateX(26px);
+      }
 
-<body class="dark-mode">
+      /* Message Container for Account Page */
+      .message-container {
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      .message-container img {
+        max-width: 250px;
+        height: auto;
+        margin-bottom: 20px;
+      }
+
+      .message-container h3 {
+        color: #333;
+        font-size: 50px;
+        margin-bottom: 25px;
+      }
+
+      .message-container a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+        font-size: 30px;
+        border: solid #007bff 2px;
+        padding: 15px;
+        border-radius: 5px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .formsec {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .login-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    </style>
+  </head>
+
+  <body class="dark-mode">
     <div class="switch">
-        <label class="slider">
-            <input type="checkbox" id="modeToggle">
-            <div class="toggle"></div>
-        </label>
+      <label class="slider">
+        <input type="checkbox" id="modeToggle" />
+        <div class="toggle"></div>
+      </label>
     </div>
-    <div class="login-container">
-        <img class="logo" src="images/dont.png" alt="Logo">
-        <h2>Login</h2>
-        <p>Sign in to continue</p>
-        <form action="login.php" method="post">
-            <label for="email">Email:</label>
-            <input type="email" name="email" placeholder="Email" required>
-    
-            <label for="password">Password:</label>
-            <input type="password" name="password" placeholder="Password" required>
-    
-            <div class="btn-container">
-                <button type="submit">LOG IN</button>
-               <a href="signup.html">SIGN UP</a> 
-            </div>
-            <br>
-            
-            <a href="forgot_password.html">Forgot Password?</a>
-            <div id="g_id_onload"
-            data-client_id="1053108395035-vld6nv0k53r80b73t0st1nqd1gti1jr3.apps.googleusercontent.com"  
-            data-callback="handleCredentialResponse">
-       </div>
-       <div class="g_id_signin" data-type="standard"></div>
-        </form>
-        
-         <!-- Google Login Button -->
-        
-</div>
+
+    <!-- Login Form -->
+    <div class="login-container dark-mode">
+      <img class="logo imglight-mode" src="images/dont.png" alt="Logo" />
+      <h2>Login</h2>
+      <p>Sign in to continue</p>
+      <form action="login.php" method="POST">
+        <div class="formsec">
+          <label for="email">Email:</label>
+          <input type="email" name="email" placeholder="Email" required />
+          <p>Enter your registered email address.</p>
+        </div>
+        <div class="formsec">
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+          <p>Enter your password associated with this account.</p>
+        </div>
+        <div class="btn-container">
+          <button type="submit">LOG IN</button>
+          <a href="signup.html">SIGN UP</a>
+        </div>
+      </form>
+      <a href="forgot_password.html">Forgot Password?</a>
     </div>
-    
+
     <script>
-        // Function to toggle between light and dark mode
-        function toggleMode() {
-            const body = document.body;
-            const loginContainer = document.querySelector('.login-container');
-            const isDarkMode = body.classList.contains('dark-mode');
-            body.classList.toggle('dark-mode', !isDarkMode);
-            body.classList.toggle('light-mode', isDarkMode);
-            loginContainer.classList.toggle('dark-mode', !isDarkMode);
-            loginContainer.classList.toggle('light-mode', isDarkMode);
-            localStorage.setItem('mode', isDarkMode ? 'light' : 'dark');
+      function toggleMode() {
+        const body = document.body;
+        const loginContainer = document.querySelector(".login-container");
+        const isDarkMode = body.classList.contains("dark-mode");
+        body.classList.toggle("dark-mode", !isDarkMode);
+        body.classList.toggle("light-mode", isDarkMode);
+        loginContainer.classList.toggle("dark-mode", !isDarkMode);
+        loginContainer.classList.toggle("light-mode", isDarkMode);
+        localStorage.setItem("mode", isDarkMode ? "light" : "dark");
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const logoimg = document.querySelector(".logo");
+        const mode = localStorage.getItem("mode") || "dark";
+        const modeToggle = document.getElementById("modeToggle");
+        if (mode === "light") {
+          document.body.classList.remove("dark-mode");
+          document.body.classList.add("light-mode");
+          document
+            .querySelector(".login-container")
+            .classList.remove("dark-mode");
+          document
+            .querySelector(".login-container")
+            .classList.add("light-mode");
+          modeToggle.checked = true;
         }
-
-        // Check local storage for mode preference
-        document.addEventListener('DOMContentLoaded', () => {
-            const mode = localStorage.getItem('mode') || 'dark';
-            const modeToggle = document.getElementById('modeToggle');
-            if (mode === 'light') {
-                document.body.classList.remove('dark-mode');
-                document.body.classList.add('light-mode');
-                document.querySelector('.login-container').classList.remove('dark-mode');
-                document.querySelector('.login-container').classList.add('light-mode');
-                modeToggle.checked = true;
-            }
-            modeToggle.addEventListener('change', toggleMode);
-        });
-
-        
-        function handleCredentialResponse(response) {
-        const decodedToken = jwt_decode(response.credential); // Decode JWT token
-        const userDetails = {
-            first_name: decodedToken.given_name,
-            last_name: decodedToken.family_name,
-            email: decodedToken.email
-        };
-
-        // Send the details to your backend (login.php) via AJAX
-        fetch('login.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userDetails),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data); // Log the data for debugging
-            if (data.success) {
-                window.location.href = 'homepage.php'; // Redirect to homepage
-            } else if (data.redirect) {
-                window.location.href = data.redirect; // Redirect to confirmation page
-            } else {
-                alert('Login failed. Try again.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('There was an error processing your request.');
-        });
-    }
-
-
-
-        
+        modeToggle.addEventListener("change", toggleMode);
+      });
     </script>
-             
-        
-</body>
+  </body>
 </html>

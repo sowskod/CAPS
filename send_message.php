@@ -4,9 +4,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-require 'C:\xampp\htdocs\PHPMailer\PHPMailer\src\Exception.php';
-require 'C:\xampp\htdocs\PHPMailer\PHPMailer\src\PHPMailer.php';
-require 'C:\xampp\htdocs\PHPMailer\PHPMailer\src\SMTP.php';
+require 'C:\xampp\htdocs\idrop\PHPMailer\src\Exception.php';
+require 'C:\xampp\htdocs\idrop\PHPMailer\src\PHPMailer.php';
+require 'C:\xampp\htdocs\idrop\PHPMailer\src\SMTP.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
@@ -58,4 +58,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo '<script>alert("There was an error sending your message: ' . $mail->ErrorInfo . '"); window.location.href = "contact..html";</script>';
     }
 }
-?>

@@ -51,6 +51,7 @@ if (mysqli_num_rows($result) === 0) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -91,7 +92,8 @@ if (mysqli_num_rows($result) === 0) {
             color: #fff;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -148,6 +150,7 @@ if (mysqli_num_rows($result) === 0) {
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2>Records for <?php echo htmlspecialchars($studentName); ?></h2>
@@ -177,7 +180,8 @@ if (mysqli_num_rows($result) === 0) {
             </tbody>
         </table>
         <a href="print.php?student_id=<?php echo htmlspecialchars($studentId); ?>" class="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Print PDF</a>
-        <a href="student.php?section_id=<?php echo htmlspecialchars($sectionId); ?>" class="back-button">Back to Students List</a>
+        <a href="page.php?student&section_id=<?php echo htmlspecialchars($sectionId); ?>" class="back-button">Back to Students List</a>
     </div>
 </body>
+
 </html>

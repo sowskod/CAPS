@@ -1,38 +1,38 @@
-
 <style>
-      #imeds {
-            width: 440px;
-            height: 440px;
-            margin-left: 420px;
-         
-        }
+    #imeds {
+        width: 440px;
+        height: 440px;
+        margin-left: 420px;
 
-        .success-message {
-            margin-top: 10px;
-            margin-bottom: 20px;
-            font-size: 85px;
-            color: green;
-            text-align: center;
-        }
+    }
 
-        #home-link {
-            display: block;
-            margin-top: 20px;
-            text-decoration: none;
-            background-color: #4CAF50;
-            color: white;
-            padding: 18px 42px;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 45px;
-         
-        }
+    .success-message {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: 85px;
+        color: green;
+        text-align: center;
+    }
+
+    #home-link {
+        display: block;
+        margin-top: 20px;
+        text-decoration: none;
+        background-color: #4CAF50;
+        color: white;
+        padding: 18px 42px;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 45px;
+
+    }
 </style>
 
 
 <?php
 include 'db.php';
-function generateRandomCode($length = 5) {
+function generateRandomCode($length = 5)
+{
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $code = '';
 
@@ -48,9 +48,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-require 'C:\Xampp\htdocs\PHPMailer\PHPMailer\src\Exception.php';
-require 'C:\Xampp\htdocs\PHPMailer\PHPMailer\src\PHPMailer.php';
-require 'C:\Xampp\htdocs\PHPMailer\PHPMailer\src\SMTP.php';
+require 'C:\xampp\htdocs\idrop\PHPMailer\src\Exception.php';
+require 'C:\xampp\htdocs\idrop\PHPMailer\src\PHPMailer.php';
+require 'C:\xampp\htdocs\idrop\PHPMailer\src\SMTP.php';
 
 $mail = new PHPMailer(true);
 
@@ -69,33 +69,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql = "UPDATE `user` SET forgot_password_code = '$confirmationCode' WHERE email = '$email'";
 
             if (mysqli_query($con, $sql)) {
-             
+
 
                 try {
                     echo '<script>alert("Please Check your Email for Reset Instructions");window.location.href = "confirm_account_forgot.php";</script>';
                     // Server settings for PHPMailer
-                $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-                $mail->isSMTP();
-                $mail->Host       = 'smtp.gmail.com';
-                $mail->SMTPAuth   = true;
-                $mail->Username   = 'dontdropassist@gmail.com';
-                $mail->Password   = 'zzqz kqfl ijry wjec';
-                $mail->SMTPSecure = 'ssl';
-                $mail->Port       = 465;
+                    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+                    $mail->isSMTP();
+                    $mail->Host       = 'smtp.gmail.com';
+                    $mail->SMTPAuth   = true;
+                    $mail->Username   = 'dontdropassist@gmail.com';
+                    $mail->Password   = 'zzqz kqfl ijry wjec';
+                    $mail->SMTPSecure = 'ssl';
+                    $mail->Port       = 465;
 
-                // Recipients and email content
-                $mail->setFrom($email, 'JayStore');
-                $mail->addAddress($email);
-                $mail->isHTML(true);
-                $mail->Subject = 'Reset Password';
-                $mail->Body    = "Hello There! Here's the code for reseting your password, 
+                    // Recipients and email content
+                    $mail->setFrom($email, 'JayStore');
+                    $mail->addAddress($email);
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Reset Password';
+                    $mail->Body    = "Hello There! Here's the code for reseting your password, 
                 please input your code: <b>$confirmationCode</b>";
-                $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+                    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
-                // Send email
-                $mail->send();
-                echo 'Message has been sent';
-                
+                    // Send email
+                    $mail->send();
+                    echo 'Message has been sent';
                 } catch (Exception $e) {
                     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
                 }

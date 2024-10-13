@@ -33,8 +33,7 @@ $student = mysqli_fetch_assoc($result);
 $deleteQuery = "DELETE FROM students WHERE id = $studentId AND user_id = $userId";
 
 if (mysqli_query($con, $deleteQuery)) {
-    echo '<script>alert("Student deleted successfully!");window.location.href = "student.php?section_id=' . $student['section_id'] . '";</script>';
+    echo '<script>alert("Student deleted successfully!");window.location.href = "page.php?student&section_id=' . $student['section_id'] . '";</script>';
 } else {
     echo "Error deleting student: " . mysqli_error($con);
 }
-?>

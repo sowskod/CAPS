@@ -36,13 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_student'])) {
     $cpNumber = mysqli_real_escape_string($con, $_POST['cp_number']);
     $program = mysqli_real_escape_string($con, $_POST['program']);
     $course = mysqli_real_escape_string($con, $_POST['course']);
-    
+
     // SQL query to insert the data into the students table
     $query = "INSERT INTO students (user_id, section_id, student_name, email, cp_number, program, course) 
               VALUES ($userId, $sectionId, '$studentName', '$studentEmail', '$cpNumber', '$program', '$course')";
-    
+
     if (mysqli_query($con, $query)) {
-        echo '<script>alert("Student added successfully!");window.location.href = "student.php?section_id=' . $sectionId . '";</script>';
+        echo '<script>alert("Student added successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
     } else {
         echo "Error adding student: " . mysqli_error($con);
     }
@@ -51,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_student'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -123,31 +124,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_student'])) {
         }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <div class="back-button">
-        <a href="student.php?section_id=<?php echo htmlspecialchars($sectionId); ?>">Back to Students List</a>
+    <div class="container">
+        <div class="back-button">
+            <a href="page.php?student&section_id=<?php echo htmlspecialchars($sectionId); ?>">Back to Students List</a>
+        </div>
+        <h2>Add New Student</h2>
+        <form method="POST" action="">
+            <input type="hidden" name="section_id" value="<?php echo htmlspecialchars($sectionId); ?>">
+            <label for="student_name">Student Name:</label>
+            <input type="text" id="student_name" name="student_name" required>
+
+            <label for="student_email">Student Email:</label>
+            <input type="email" id="student_email" name="student_email" required>
+
+            <label for="cp_number">Cellphone Number:</label>
+            <input type="text" id="cp_number" name="cp_number" required>
+
+            <label for="program">Program:</label>
+            <input type="text" id="program" name="program" required>
+
+            <label for="course">Course:</label>
+            <input type="text" id="course" name="course" required>
+
+            <button type="submit" name="add_student">Add Student</button>
+        </form>
     </div>
-    <h2>Add New Student</h2>
-    <form method="POST" action="">
-        <input type="hidden" name="section_id" value="<?php echo htmlspecialchars($sectionId); ?>">
-        <label for="student_name">Student Name:</label>
-        <input type="text" id="student_name" name="student_name" required>
-        
-        <label for="student_email">Student Email:</label>
-        <input type="email" id="student_email" name="student_email" required>
-
-        <label for="cp_number">Cellphone Number:</label>
-        <input type="text" id="cp_number" name="cp_number" required>
-
-        <label for="program">Program:</label>
-        <input type="text" id="program" name="program" required>
-
-        <label for="course">Course:</label>
-        <input type="text" id="course" name="course" required>
-        
-        <button type="submit" name="add_student">Add Student</button>
-    </form>
-</div>
 </body>
+
 </html>

@@ -48,7 +48,7 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
                 $stmt->execute();
             }
 
-            echo '<script>alert("Students uploaded successfully!");window.location.href = "student.php?section_id=' . $sectionId . '";</script>';
+            echo '<script>alert("Students uploaded successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
         } catch (Exception $e) {
             echo "Error loading file: " . $e->getMessage();
         }
