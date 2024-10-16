@@ -116,7 +116,7 @@ mysqli_stmt_close($scoresStmt);
                 <option value="attendance">Attendance</option>
             </select>
             <label for="total_score">Total Score:</label>
-            <input type="number" name="total_score" id="total_score" min="0" placeholder="Input Total or over score" required>
+            <input type="number" name="total_score" id="total_score" min="10" placeholder="Input Total or over score" required>
             <button type="submit" name="add_activity">Add Activity</button>
         </form>
     </div>
@@ -138,7 +138,7 @@ mysqli_stmt_close($scoresStmt);
                     ?>
                         <th><?php echo htmlspecialchars($activity['activity_type']); ?> (<?php echo htmlspecialchars($activity['total_score']); ?>)</th>
                     <?php endwhile; ?>
-                    <th>Action</th>
+                    <th style=" width: 100%; ">Action</th>
                 </tr>
             </thead>
             <tbody>
