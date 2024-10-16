@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -11,16 +11,17 @@ $userId = $_SESSION['user_id'];
 // Include the database connection file
 include 'db.php';
 
-// Retrieve student_id from the URL
-$studentId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+// Retrieve student_id and section_id from the URL
+$student_id = isset($_GET['student_id']) ? intval($_GET['student_id']) : 0;
+$section_id = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
 
 // Validate student_id
-if ($studentId <= 0) {
+if ($student_id <= 0) {
     die("Invalid student ID.");
 }
 
 // Fetch student details to display in the form
-$studentQuery = "SELECT * FROM students WHERE id = $studentId AND user_id = $userId";
+$studentQuery = "SELECT * FROM students WHERE id = $student_id AND user_id = $userId";
 $result = mysqli_query($con, $studentQuery);
 
 if (!$result || mysqli_num_rows($result) == 0) {
@@ -37,10 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $program = mysqli_real_escape_string($con, $_POST['program']);
     $course = mysqli_real_escape_string($con, $_POST['course']);
 
-    $updateQuery = "UPDATE students SET student_name='$studentName', email='$studentEmail', cp_number='$cpNumber', program='$program', course='$course' WHERE id=$studentId AND user_id = $userId";
+    $updateQuery = "UPDATE students SET student_name='$studentName', email='$studentEmail', cp_number='$cpNumber', program='$program', course='$course' WHERE id=$student_id AND user_id = $userId";
 
     if (mysqli_query($con, $updateQuery)) {
-        echo '<script>alert("Student updated successfully!");window.location.href = "page.php?student&section_id=' . $student['section_id'] . '";</script>';
+        echo '<script>alert("Student updated successfully!");window.location.href = "page.php?student&section_id=' . $student_id . '&section_id=' . $section_id . '";</script>';
     } else {
         echo "Error updating student: " . mysqli_error($con);
     }
@@ -56,23 +57,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Edit Student</title>
     <!-- Add your styles here -->
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
+      
         .container {
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            max-width: 99vw;
             width: 100%;
             padding: 20px;
             box-sizing: border-box;
@@ -131,12 +121,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         a:hover {
             text-decoration: underline;
         }
+        .teacher-button {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px; 
+    height: 80px; 
+    background: linear-gradient(135deg, #B2DFDB, #00796B); 
+    border-radius: 12px; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+    text-decoration: none; 
+    transition: transform 0.2s, box-shadow 0.2s; 
+}
+
+.teacher-button:hover {
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); 
+}
+
+.teacher-button svg {
+    transition: fill 0.2s; 
+}
+
+.teacher-button:hover svg circle {
+    fill: #E8F6F3; 
+}
+
+.teacher-button:hover svg path {
+    stroke: #E8F6F3;
+}
+
     </style>
 </head>
 
 <body>
     <div class="container">
+
+    <div class="back-button">
+    <a class="teacher-button" href="page.php?student&section_id=<?php echo htmlspecialchars($student['section_id']); ?>"><svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      
+        <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2"/>
+      
+        <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg></a>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+     <br>
         <h2>Edit Student</h2>
+
+    <br>
         <form method="POST" action="">
             <label for="student_name">Student Name:</label>
             <input type="text" id="student_name" name="student_name" value="<?php echo htmlspecialchars($student['student_name']); ?>" required>
@@ -144,18 +183,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="student_email">Student Email:</label>
             <input type="email" id="student_email" name="student_email" value="<?php echo htmlspecialchars($student['email']); ?>" required>
 
-            <label for="cp_number">Cellphone Number:</label>
-            <input type="text" id="cp_number" name="cp_number" value="<?php echo htmlspecialchars($student['cp_number']); ?>" required>
-
-            <label for="program">Program:</label>
-            <input type="text" id="program" name="program" value="<?php echo htmlspecialchars($student['program']); ?>" required>
-
-            <label for="course">Course:</label>
-            <input type="text" id="course" name="course" value="<?php echo htmlspecialchars($student['course']); ?>" required>
-
+      
             <button type="submit">Update Student</button>
         </form>
-        <a href="page.php?student&section_id=<?php echo htmlspecialchars($student['section_id']); ?>">Back to Students List</a>
+       
     </div>
 </body>
 

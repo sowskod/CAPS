@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 
 // Check if the user is logged in
 if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
@@ -157,13 +157,15 @@ mysqli_close($con);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Settings</title>
     <style>
-     body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f8f8f8;
-    margin: 0;
-    padding: 0;
-    
-}
+     .container {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 99vw;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
 main {
     background-color: #fff;
@@ -243,11 +245,7 @@ img {
 }
 
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
+
 
 header {
     background-color: #000;
@@ -285,6 +283,38 @@ nav ul li {
             z-index: 9999; /* Ensure it appears above the full-screen image */
             display: none; /* Initially hide the button */
         }
+        .teacher-button {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px; /* Adjust width for better hit area */
+    height: 80px; /* Adjust height for better hit area */
+    background: linear-gradient(135deg, #B2DFDB, #00796B); /* Gradient background */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    text-decoration: none; /* No underline on text */
+    transition: transform 0.2s, box-shadow 0.2s; /* Smooth transition effects */
+}
+
+.teacher-button:hover {
+    transform: translateY(-3px); /* Raise button on hover */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); /* Deeper shadow on hover */
+}
+
+.teacher-button svg {
+    transition: fill 0.2s; /* Smooth transition for SVG colors */
+}
+
+.teacher-button:hover svg circle {
+    fill: #E8F6F3; /* Keep circle color on hover */
+}
+
+.teacher-button:hover svg path {
+    stroke: #E8F6F3; /* Change path color on hover */
+}
 
     </style>
 
@@ -308,42 +338,28 @@ nav ul li {
 
 </head>
 <body>
-<!--
-        <div>
-            <img src="images/dont.png" alt="Your Logo" class="logo">
-        </div>
--->
-   
-    
 
-<br><div class="container">
-        <header>
-            <div class="logo">
-                <img src="images/dont.png" alt="Logo">
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">About Us</a></li>
-                
-                </ul>
-            </nav>
+    
+<link rel="stylesheet" href="css\global.css">
+<link rel="stylesheet" href="css\homepage.css">
+
+<div class="container">
+       
             <div class="user-icon">
             <?php if ($userData['profile_picture']) : ?>
         <!-- Add an onclick event to open the image in full screen -->
-        <img src="futos/<?php echo $userData['profile_picture']; ?>" alt="Profile Picture" onclick="openFullScreen(this)">
+        
     <?php endif; ?>
             </div>
-        </header>
+       
    
 <!-- Arrow Link to Homepage -->
-<a href="homepage.php" style="position: absolute; top: 20px; left: 40px; text-decoration: none; color: black;">
+<a href="page.php" class="teacher-button">
     <svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <!-- Outer circle -->
-        <circle cx="12" cy="12" r="10" fill="#F7F7F7" stroke="black" stroke-width="2"/>
+        <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2"/>
         <!-- Inner arrow shape -->
-        <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
 </a>
 

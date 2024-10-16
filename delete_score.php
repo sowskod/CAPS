@@ -27,7 +27,7 @@ if (!$score) {
 // Delete the score
 $deleteQuery = "DELETE FROM scores WHERE id = $scoreId";
 if (mysqli_query($con, $deleteQuery)) {
-    echo '<script>alert("Score deleted successfully!");window.location.href = "student_records.php?student_id=' . $score['student_id'] . '&section_id=' . $_GET['section_id'] . '";</script>';
+    echo '<script>alert("Score deleted successfully!");window.location.href = "page.php?student=records&student_id=' . $score['student_id'] . '&section_id=' . $_GET['section_id'] . '";</script>';
 } else {
     echo "Error deleting score: " . mysqli_error($con);
 }

@@ -7,6 +7,23 @@
     <title>iDropAlert</title>
     <link rel="stylesheet" href="css/global.css">
     <link rel="icon" href="css/img/logo.ico">
+    <style>
+     .headsecgroup {
+        display: flex;
+        justify-content: space-around;
+        padding: 20px;
+        
+    } 
+    .headersec a {
+        color: white; 
+        text-decoration: none;
+        font-size: 18px;
+        font-family: Arial, sans-serif;
+    }   
+    .headersec a:hover {
+        text-decoration: underline;
+    }
+</style>
 </head>
 <?php
 session_start();
@@ -18,6 +35,11 @@ if ($result) {
     $userData = mysqli_fetch_assoc($result);
 } else {
     die("Error fetching user data: " . mysqli_error($con));
+}
+if (isset($_GET['action']) && $_GET['action'] == 'signout') {
+    session_destroy(); 
+    header('Location: signin.html');
+    exit;
 }
 ?>
 
@@ -31,7 +53,7 @@ if ($result) {
                     <p><?= $userData['email'] ?></p>
                 </div>
                 <div id="dropdownContent" class="dropdown-content">
-                    <a href="account_settings.php">Profile Settings</a>
+                <a href="page.php?settings">Profile Settings</a>
                     <form action="account_settings.php" method="post">
                         <input type="submit" id="logout" name="logout" value="Logout">
                     </form>
@@ -39,34 +61,49 @@ if ($result) {
             </div>
             <div class="headsecgroup">
                 <div class="headersec">
-                    <p>Dashboard</p>
+                <a href="page.php">Dashboard</a>
                 </div>
                 <div class="headersec">
-                    <p>Sign out</p>
+                <a href="page.php?settings">Profile Settings</a>
+                </div>
+                <div class="headersec">
+                <a href="page.php?action=signout">Sign Out</a>
                 </div>
             </div>
         </div>
     </header>
     <div class="dom">
-        <?php
+    <?php
         if (isset($_GET['dashboard'])) {
-            include("dashboard.php");
+        include("dashboard.php");
         } else if (isset($_GET['student'])) {
+            if ($_GET['student'] == 'most_at_risk' && isset($_GET['section_id'])) {
+                include("most_at_risk.php");  
+            } 
+                        
+        else if ($_GET['student'] == 'records' && isset($_GET['student_id']) && isset($_GET['section_id'])) {
+             include("student_records.php"); 
+             
+        } 
+        else if ($_GET['student'] == 'edit' && isset($_GET['student_id']) && isset($_GET['section_id'])) {
+            include("edit_student.php");  
+        } 
+        else if ($_GET['student'] == 'add_student' && isset($_GET['section_id'])) {
+            include("add_student.php");
+        }
+        else if (isset($_GET['edit_score']) && isset($_GET['score_id'])) {
+            include("edit_score.php");  
+             
+        }
+        else {
             include("student.php");
-        } else if (isset($_GET['view_ingredients'])) {
-            include("read_ingredients.php");
-        } else if (isset($_GET['view_category'])) {
-            include("read_category.php");
-        } else if (isset($_GET['view_user'])) {
-            include("read_user.php");
-        } else if (isset($_GET['edit_meal'])) {
-            include("edit_meal.php");
-        } else if (isset($_GET['insert_meal'])) {
-            include("insert_meal.php");
+        }
+        } else if (isset($_GET['settings'])) {
+            include("account_settings.php");
         } else {
             include("homepage.php");
         }
-        ?>
+    ?>
     </div>
 </body>
 

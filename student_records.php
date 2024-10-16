@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -57,21 +56,14 @@ if (mysqli_num_rows($result) === 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Records</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
         .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #ffffff;
+            background: #fff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 99vw;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         h2 {
@@ -148,11 +140,52 @@ if (mysqli_num_rows($result) === 0) {
         .back-button:hover {
             background-color: #2980b9;
         }
+        .teacher-button {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px; 
+    height: 80px; 
+    background: linear-gradient(135deg, #B2DFDB, #00796B); 
+    border-radius: 12px; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+    text-decoration: none; 
+    transition: transform 0.2s, box-shadow 0.2s; 
+}
+
+.teacher-button:hover {
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); 
+}
+
+.teacher-button svg {
+    transition: fill 0.2s;
+}
+
+.teacher-button:hover svg circle {
+    fill: #E8F6F3; 
+}
+
+.teacher-button:hover svg path {
+    stroke: #E8F6F3;
+}
     </style>
 </head>
 
 <body>
     <div class="container">
+
+    <a class="teacher-button" href="page.php?student&section_id=<?php echo htmlspecialchars($sectionId); ?>" class="back-button"><svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+       
+        <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2"/>
+ 
+        <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg></a>
+    <br>
+    <br>
         <h2>Records for <?php echo htmlspecialchars($studentName); ?></h2>
         <table>
             <thead>
@@ -172,7 +205,8 @@ if (mysqli_num_rows($result) === 0) {
                         <td><?php echo htmlspecialchars($row['total_score']); ?></td>
                         <td><?php echo htmlspecialchars(date('Y-m-d H:i:s', strtotime($row['created_at']))); ?></td>
                         <td class="actions">
-                            <a href="edit_score.php?score_id=<?php echo htmlspecialchars($row['score_id']); ?>">Edit</a>
+                        <a href="page.php?student=records&edit_score=true&score_id=<?php echo htmlspecialchars($row['score_id']); ?>">Edit</a>
+
                             <a href="delete_score.php?score_id=<?php echo htmlspecialchars($row['score_id']); ?>" class="delete" onclick="return confirm('Are you sure you want to delete this score?');">Delete</a>
                         </td>
                     </tr>
@@ -180,7 +214,7 @@ if (mysqli_num_rows($result) === 0) {
             </tbody>
         </table>
         <a href="print.php?student_id=<?php echo htmlspecialchars($studentId); ?>" class="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Print PDF</a>
-        <a href="page.php?student&section_id=<?php echo htmlspecialchars($sectionId); ?>" class="back-button">Back to Students List</a>
+       
     </div>
 </body>
 

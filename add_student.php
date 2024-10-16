@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -57,20 +57,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_student'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Student</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
+       
+       .container {
             background: #fff;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 99vw;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         h2 {
@@ -122,31 +117,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_student'])) {
         .back-button a:hover {
             text-decoration: underline;
         }
+        .teacher-button {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px; 
+    height: 80px; 
+    background: linear-gradient(135deg, #B2DFDB, #00796B); 
+    border-radius: 12px; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+    text-decoration: none; 
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.teacher-button:hover {
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); 
+}
+
+.teacher-button svg {
+    transition: fill 0.2s; 
+}
+
+.teacher-button:hover svg circle {
+    fill: #E8F6F3; 
+}
+
+.teacher-button:hover svg path {
+    stroke: #E8F6F3; 
+}
+
     </style>
 </head>
 
 <body>
     <div class="container">
         <div class="back-button">
-            <a href="page.php?student&section_id=<?php echo htmlspecialchars($sectionId); ?>">Back to Students List</a>
+            <a class="teacher-button" href="page.php?student&section_id=<?php echo htmlspecialchars($sectionId); ?>"> <svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      
+        <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2"/>
+     
+        <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg></a>
+    <br>
+    <br>
+    <br>
+    <br>
         </div>
         <h2>Add New Student</h2>
         <form method="POST" action="">
             <input type="hidden" name="section_id" value="<?php echo htmlspecialchars($sectionId); ?>">
+
+            <label for="studentnumber">Student No:</label>
+            <input type="text" id="studentnumber" name="studentnumber" required>
+
             <label for="student_name">Student Name:</label>
             <input type="text" id="student_name" name="student_name" required>
 
             <label for="student_email">Student Email:</label>
             <input type="email" id="student_email" name="student_email" required>
-
-            <label for="cp_number">Cellphone Number:</label>
-            <input type="text" id="cp_number" name="cp_number" required>
-
-            <label for="program">Program:</label>
-            <input type="text" id="program" name="program" required>
-
-            <label for="course">Course:</label>
-            <input type="text" id="course" name="course" required>
 
             <button type="submit" name="add_student">Add Student</button>
         </form>

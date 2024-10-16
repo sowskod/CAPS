@@ -1,12 +1,10 @@
 <?php
-session_start();
+
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     die("User is not logged in. Please log in first.");
 }
-
-$userId = $_SESSION['user_id'];
 
 // Include the database connection file
 include 'db.php';
@@ -36,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (mysqli_query($con, $updateQuery)) {
         echo '<script>
                 alert("Score updated successfully!");
-                window.location.href = "student_records.php?student_id=' . $score['student_id'] . '&section_id=' . $sectionId . '";
+                window.location.href = "page.php?student=records&student_id=' . $score['student_id'] . '&section_id=' . $sectionId . '";
               </script>';
     } else {
         echo "Error updating score: " . mysqli_error($con);
@@ -51,20 +49,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Score</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
         .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 99vw;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
         }
+
         h2 {
             color: #333;
             margin-bottom: 20px;
@@ -108,11 +102,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         a:hover {
             text-decoration: underline;
         }
+        .teacher-button {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px; 
+    height: 80px; 
+    background: linear-gradient(135deg, #B2DFDB, #00796B); 
+    border-radius: 12px; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+    text-decoration: none; 
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.teacher-button:hover {
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); 
+}
+
+.teacher-button svg {
+    transition: fill 0.2s; 
+}
+
+.teacher-button:hover svg circle {
+    fill: #E8F6F3; 
+}
+
+.teacher-button:hover svg path {
+    stroke: #E8F6F3; 
+}
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Edit Score</h2>
+    <a class="teacher-button" href="page.php?student=records&student_id=<?php echo urlencode($score['student_id']); ?>&section_id=<?php echo urlencode($sectionId); ?>"><svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      
+      <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2"/>
+    
+      <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></a>
+  <br>
+    <br>
+    <br>
+    <br>
+     <br>
+        <center><h2>Edit Score</h2> </center>
         <form method="POST">
             <label for="activity_type">Activity Type:</label>
             <input type="text" id="activity_type" value="<?php echo htmlspecialchars($score['activity_type']); ?>" disabled>
@@ -120,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="number" id="score" name="score" value="<?php echo htmlspecialchars($score['score']); ?>" min="0" max="<?php echo htmlspecialchars($score['total_score']); ?>" required>
             <button type="submit">Update Score</button>
         </form>
-        <a href="student_records.php?student_id=<?php echo urlencode($score['student_id']); ?>&section_id=<?php echo urlencode($sectionId); ?>">Back to Records</a>
+       
     </div>
 </body>
 </html>

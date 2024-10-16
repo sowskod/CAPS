@@ -29,14 +29,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_activity'])) {
         $activityType = mysqli_real_escape_string($con, $_POST['activity_type']);
         $totalScore = intval($_POST['total_score']);
+        
+        // Debugging output
         $query = "INSERT INTO activities (section_id, user_id, activity_type, total_score) VALUES ($sectionId, $userId, '$activityType', $totalScore)";
+        echo $query; // Check the SQL query
+    
         if (mysqli_query($con, $query)) {
             echo '<script>alert("Activity added successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
         } else {
             echo "Error adding activity: " . mysqli_error($con);
         }
     }
-
     if (isset($_POST['save_scores'])) {
         $scoresDeletedActivities = [];
         foreach ($_POST['scores'] as $studentId => $activities) {
@@ -44,28 +47,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $studentId = intval($studentId);
                 $activityId = intval($activityId);
                 $score = intval($score);
-
+    
+                // Insert score with duplicate key handling
                 $query = "INSERT INTO scores (student_id, activity_id, score) VALUES ($studentId, $activityId, $score)
                           ON DUPLICATE KEY UPDATE score = VALUES(score)";
                 if (!mysqli_query($con, $query)) {
                     echo "Error saving score: " . mysqli_error($con);
                 }
-
+    
                 $scoresDeletedActivities[] = $activityId;
             }
         }
-
+    
         if (!empty($scoresDeletedActivities)) {
+            // Prepare to update displayed status
             $activityIds = implode(',', array_unique($scoresDeletedActivities));
-            $updateActivitiesQuery = "UPDATE activities SET displayed s= 0 WHERE id IN ($activityIds)";
+            $updateActivitiesQuery = "UPDATE activities SET displayed = 0 WHERE id IN ($activityIds)";
             if (!mysqli_query($con, $updateActivitiesQuery)) {
                 echo "Error updating activities display status: " . mysqli_error($con);
             }
         }
-
+    
         echo '<script>alert("Scores saved and activities updated successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
     }
-}
+}    
 
 // Fetch section details
 $sectionQuery = "SELECT * FROM sections WHERE id = $sectionId";
@@ -100,7 +105,7 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
 ?>
 
 
-<!-- HTML Part -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -247,33 +252,72 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
                 padding: 8px;
             }
         }
+        .teacher-button {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px; 
+    height: 80px; 
+    background: linear-gradient(135deg, #B2DFDB, #00796B); 
+    border-radius: 12px; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+    text-decoration: none; 
+    transition: transform 0.2s, box-shadow 0.2s; 
+}
+
+.teacher-button:hover {
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); 
+}
+
+.teacher-button svg {
+    transition: fill 0.2s; 
+}
+
+.teacher-button:hover svg circle {
+    fill: #E8F6F3; 
+}
+
+.teacher-button:hover svg path {
+    stroke: #E8F6F3; 
+}
+
     </style>
+    
 </head>
 
 <body>
-    <a href="page.php" style="position: absolute; top: 0px; left: 20px; text-decoration: none; color: black;">
-        <svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Outer circle -->
-            <circle cx="12" cy="12" r="10" fill="#F7F7F7" stroke="black" stroke-width="2" />
-            <!-- Inner arrow shape -->
-            <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-    </a>
-
-    <br>
-    <br>
-    <br>
-    <br>
+<a href="page.php" class="teacher-button">
+    <svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        
+        <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2"/>
+      
+        <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+</a>
 
 
-    <a href="add_student.php?section_id=<?php echo htmlspecialchars($sectionId); ?>" class="add-student-form">Add New Student</a>
-    <button type="button" onclick="window.location.href='most_at_risk.php?section_id=<?php echo $sectionId; ?>'" class="view">View MOST at Risk</button>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+    <a href="page.php?student=add_student&section_id=<?php echo htmlspecialchars($sectionId); ?>" class="add-student-form">Add New Student</a>
+
+    <button type="button" onclick="window.location.href='page.php?student=most_at_risk&section_id=<?php echo $sectionId; ?>'" class="view">View MOST at Risk</button>
+
     <form method="POST" action="upload_students.php?section_id=<?php echo $sectionId; ?>" enctype="multipart/form-data">
         <label for="file">Upload Excel File:</label>
         <input type="file" name="file" id="file" accept=".xlsx, .xls">
         <button type="submit">Upload</button>
     </form>
-    <form method="POST" action="student.php?section_id=<?php echo $sectionId; ?>">
+    <form method="POST" action="page.php?student&section_id=<?php echo $sectionId; ?>">
         <h3>Add Activity</h3>
         <label for="activity_type">Activity Type:</label>
         <select name="activity_type" id="activity_type" required>
@@ -292,10 +336,11 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
     <div class="students">
         <h2>Students in Section <?php echo htmlspecialchars($sectionName); ?></h2>
 
-        <form method="POST" action="student.php?section_id=<?php echo $sectionId; ?>">
+        <form method="POST" action="page.php?student&section_id=<?php echo $sectionId; ?>">
             <table>
                 <thead>
                     <tr>
+                        
                         <th>Student Name</th>
                         <th>Email</th>
                         <?php
@@ -329,9 +374,10 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
                                 </td>
                             <?php endwhile; ?>
                             <td class='actions'>
-                                <a href='edit_student.php?id=<?php echo $student['id']; ?>'>Edit</a>
+                                <a href="page.php?student=edit&student_id=<?php echo $student['id']; ?>&section_id=<?php echo $student['section_id']; ?>">Edit</a>
                                 <a href='delete_student.php?id=<?php echo $student['id']; ?>' class='delete' onclick='return confirm("Are you sure?")'>Delete</a>
-                                <a href='student_records.php?student_id=<?php echo $student['id']; ?>'>Records</a>
+                                <a href="page.php?student=records&student_id=<?php echo $student['id']; ?>&section_id=<?php echo $student['section_id']; ?>">Records</a>
+
                             </td>
                         </tr>
                     <?php endwhile; ?>

@@ -77,6 +77,16 @@ body {
   flex-direction: column;
   gap: 10px;
 }
+.headersec a {
+  color: white; 
+  text-decoration: none;
+  font-size: 18px;
+  font-family: Arial, sans-serif;
+}
+
+.headersec a:hover {
+  text-decoration: underline; 
+}
 header .profile-picture img {
   width: 110px;
   height: 110px;

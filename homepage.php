@@ -127,8 +127,8 @@ mysqli_close($con);
         <div class="form">
             <form method="POST" action="page.php">
                 <input type="hidden" name="page" value="homepage">
-                <h2>Add New Section&Course</h2>
-                <input type="text" name="section_name" placeholder="Enter section&couurse name" required>
+                <h2>Add Year Section&Course</h2>
+                <input type="text" name="section_name" placeholder="eg. 4A G1 CAPSTONE" required>
                 <button type="submit" name="add_section">Add Section&Course</button>
             </form>
         </div>
@@ -138,7 +138,7 @@ mysqli_close($con);
                 <thead>
                     <tr>
                         <th>
-                            Section&Course Name
+                            Year Section&Course Name
                         </th>
                         <th>Actions</th>
                     </tr>
