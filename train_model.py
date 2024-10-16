@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.externals import joblib
 
 # Example DataFrame: columns=['total_activities', 'absences', 'low_scores', 'high_scores', 'at_risk']
-data = pd.read_csv('student_data.csv')
+data = pd.read_csv('trainmodel_data.csv')
 
 X = data[['total_activities', 'absences', 'low_scores', 'high_scores']]
 y = data['at_risk']  # Binary classification: 1 = "at risk", 0 = "not at risk"
