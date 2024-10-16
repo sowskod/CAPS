@@ -101,15 +101,9 @@
       a.light-mode {
         color: #000;
       }
-      a.light-mode {
-        color: #000;
-      }
       .login-container.light-mode {
         background-color: #fff;
         color: #000;
-      }
-      .imglight-mode {
-        filter: invert(1);
       }
 
       .login-container.light-mode input[type="email"],
@@ -190,44 +184,19 @@
       input:checked + .slider .toggle:before {
         transform: translateX(26px);
       }
-    
-      /* Message Container for Account Page */
-      .message-container {
-        text-align: center;
-        margin-top: 50px;
-      }
 
-      .message-container img {
-        max-width: 250px;
-        height: auto;
-        margin-bottom: 20px;
-      }
-
-      .message-container h3 {
-        color: #333;
-        font-size: 50px;
-        margin-bottom: 25px;
-      }
-
-      .message-container a {
-        text-decoration: none;
-        color: #007bff;
-        font-weight: bold;
-        font-size: 30px;
-        border: solid #007bff 2px;
-        padding: 15px;
-        border-radius: 5px;
-      }
       form {
         display: flex;
         flex-direction: column;
         gap: 20px;
       }
+
       .formsec {
         display: flex;
         flex-direction: column;
         gap: 10px;
       }
+
       .login-container {
         display: flex;
         flex-direction: column;
@@ -266,34 +235,36 @@
           <p>Enter your password associated with this account.</p>
         </div>
         <div class="btn-container">
-          <button type="submit">LOG IN
-           
-          </button>
-          <a href="signup.html">SIGN UP
-            
-          </a>
+          <button type="submit">LOG IN</button>
+          <a href="signup.html">SIGN UP</a>
         </div>
-        
       </form>
       <a href="forgot_password.html">Forgot Password?</a>
     </div>
 
     <script>
-          
-
       function toggleMode() {
         const body = document.body;
         const loginContainer = document.querySelector(".login-container");
+        const logoImg = document.querySelector(".logo");
         const isDarkMode = body.classList.contains("dark-mode");
         body.classList.toggle("dark-mode", !isDarkMode);
         body.classList.toggle("light-mode", isDarkMode);
         loginContainer.classList.toggle("dark-mode", !isDarkMode);
         loginContainer.classList.toggle("light-mode", isDarkMode);
+
+       
+        if (isDarkMode) {
+          logoImg.src = "css/img/gray.png"; 
+        } else {
+          logoImg.src = "images/dont.png"; 
+        }
+
         localStorage.setItem("mode", isDarkMode ? "light" : "dark");
       }
 
       document.addEventListener("DOMContentLoaded", () => {
-        const logoimg = document.querySelector(".logo");
+        const logoImg = document.querySelector(".logo");
         const mode = localStorage.getItem("mode") || "dark";
         const modeToggle = document.getElementById("modeToggle");
         if (mode === "light") {
@@ -305,6 +276,7 @@
           document
             .querySelector(".login-container")
             .classList.add("light-mode");
+          logoImg.src = "images/dont.png";
           modeToggle.checked = true;
         }
         modeToggle.addEventListener("change", toggleMode);
