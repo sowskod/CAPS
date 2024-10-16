@@ -1,8 +1,8 @@
 {
-    "require": {
-        "phpoffice/phpspreadsheet": "^3.3",
-        "twilio/sdk": "^8.2",
-        "google/apiclient": "^2.0",
-        "symfony/process": "^7.1"
-    }
+  "require": {
+    "phpoffice/phpspreadsheet": "^3.3",
+    "twilio/sdk": "^8.2",
+    "google/apiclient": "^2.0",
+    "symfony/process": "^7.1"
+  }
 }

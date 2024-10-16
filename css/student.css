@@ -1,0 +1,271 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #333;
+}
+
+a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-decoration: none;
+  color: #333;
+}
+
+.back-button svg {
+  vertical-align: middle;
+}
+
+.add-student-form,
+.view {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  background-color: #3498db;
+  color: white;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.add-student-form:hover,
+.view:hover {
+  background-color: #2980b9;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+form input[type="file"] {
+  margin-bottom: 10px;
+}
+
+form button {
+  padding: 10px 20px;
+  background-color: #3498db;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #2980b9;
+}
+
+.students {
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+table,
+th,
+td {
+  border: 1px solid #ddd;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  background: #feff99;
+}
+
+th {
+  background-color: #adb8ca;
+}
+
+.actions a {
+  margin-right: 10px;
+  color: #3498db;
+}
+
+.actions a.delete {
+  color: #e74c3c;
+}
+
+.actions a.delete:hover {
+  text-decoration: underline;
+}
+
+.actions a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  table {
+    font-size: 14px;
+  }
+
+  th,
+  td {
+    padding: 8px;
+  }
+}
+
+.teacher-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 80px;
+  background: linear-gradient(135deg, #b2dfdb, #00796b);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin: 0 0 20px 0;
+}
+
+.teacher-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.teacher-button svg {
+  transition: fill 0.2s;
+}
+
+.teacher-button:hover svg circle {
+  fill: #e8f6f3;
+}
+
+.teacher-button:hover svg path {
+  stroke: #e8f6f3;
+}
+.configs {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px #ccc solid;
+  border-radius: 10px;
+  width: 40%;
+}
+.toppart {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.hits {
+  width: 60%;
+  background: #ccc;
+  border-radius: 10px;
+}
+tr,
+td,
+th {
+  border: solid black 2px;
+  border-collapse: collapse;
+}
+.toppart {
+  background-color: #f8f9fa; 
+  padding: 20px;
+  border-radius: 8px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.configs {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mainbtns {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-student-form {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.add-student-form:hover {
+  background-color: #0056b3; 
+}
+
+.view {
+  background-color: #28a745; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.view:hover {
+  background-color: #218838; 
+}
+
+.upload-form,
+.activity-form {
+  background-color: #ffffff;
+  padding: 15px;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block; 
+  margin-bottom: 5px; 
+  font-weight: bold;
+}
+
+input[type="file"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ced4da; 
+  border-radius: 4px; 
+  box-sizing: border-box; 
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
