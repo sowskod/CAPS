@@ -1,19 +1,13 @@
 <?php
 
-// Check if the user is logged in
+
 if (!isset($_SESSION['user_id'])) {
     die("User is not logged in. Please log in first.");
 }
-
 $userId = $_SESSION['user_id'];
 
-// Include the database connection file
-include 'db.php';
-
-// Fetch section ID
 $sectionId = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
 
-// Handle student and activity addition
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_student'])) {
         $studentName = mysqli_real_escape_string($con, $_POST['student_name']);
@@ -30,9 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $activityType = mysqli_real_escape_string($con, $_POST['activity_type']);
         $totalScore = intval($_POST['total_score']);
 
-        // Debugging output
         $query = "INSERT INTO activities (section_id, user_id, activity_type, total_score) VALUES ($sectionId, $userId, '$activityType', $totalScore)";
-        echo $query; // Check the SQL query
+        echo $query;
 
         if (mysqli_query($con, $query)) {
             echo '<script>alert("Activity added successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
@@ -48,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $activityId = intval($activityId);
                 $score = intval($score);
 
-                // Insert score with duplicate key handling
                 $query = "INSERT INTO scores (student_id, activity_id, score) VALUES ($studentId, $activityId, $score)
                           ON DUPLICATE KEY UPDATE score = VALUES(score)";
                 if (!mysqli_query($con, $query)) {
@@ -60,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (!empty($scoresDeletedActivities)) {
-            // Prepare to update displayed status
             $activityIds = implode(',', array_unique($scoresDeletedActivities));
             $updateActivitiesQuery = "UPDATE activities SET displayed = 0 WHERE id IN ($activityIds)";
             if (!mysqli_query($con, $updateActivitiesQuery)) {
@@ -72,211 +63,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Fetch section details
 $sectionQuery = "SELECT * FROM sections WHERE id = $sectionId";
 $sectionResult = mysqli_query($con, $sectionQuery);
 $section = mysqli_fetch_assoc($sectionResult);
 $sectionName = htmlspecialchars($section['section_name']); // Ensure section name is escaped
 $sectionId = intval($section['id']); // Ensure section ID is an integer
 
-// Fetch students in the selected section, sorted by student_name
 $studentsQuery = "SELECT * FROM students WHERE section_id = $sectionId AND user_id = $userId ORDER BY student_name ASC";
 $studentsResult = mysqli_query($con, $studentsQuery);
 
-// Check if query execution was successful
 if (!$studentsResult) {
     die("Error fetching students: " . mysqli_error($con));
 }
 
 
-// Fetch activities for the selected section
 $activitiesQuery = "SELECT * FROM activities WHERE section_id = $sectionId AND user_id = $userId";
 $activitiesResult = mysqli_query($con, $activitiesQuery);
 
-// Fetch scores for each student and activity
 $scoresQuery = "SELECT * FROM scores WHERE student_id IN (SELECT id FROM students WHERE section_id = $sectionId) AND activity_id IN (SELECT id FROM activities WHERE section_id = $sectionId AND displayed = 1)";
 $scoresResult = mysqli_query($con, $scoresQuery);
 
-// Organize scores in an associative array
 $scores = [];
 while ($score = mysqli_fetch_assoc($scoresResult)) {
     $scores[$score['student_id']][$score['activity_id']] = $score['score'];
 }
 ?>
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-        color: #333;
-    }
-
-    a {
-        color: #3498db;
-        text-decoration: none;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-
-    .back-button {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        text-decoration: none;
-        color: #333;
-    }
-
-    .back-button svg {
-        vertical-align: middle;
-    }
-
-    .add-student-form,
-    .view {
-        display: inline-block;
-        padding: 10px 20px;
-        margin-bottom: 20px;
-        background-color: #3498db;
-        color: white;
-        border-radius: 4px;
-        text-align: center;
-    }
-
-    .add-student-form:hover,
-    .view:hover {
-        background-color: #2980b9;
-    }
-
-    form {
-        margin-bottom: 20px;
-    }
-
-    form label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-    }
-
-    form input[type="file"] {
-        margin-bottom: 10px;
-
-    }
-
-    form button {
-        padding: 10px 20px;
-        background-color: #3498db;
-        border: none;
-        color: white;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    form button:hover {
-        background-color: #2980b9;
-    }
-
-    .students {
-        margin-top: 20px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
-
-    table,
-    th,
-    td {
-        border: 1px solid #ddd;
-    }
-
-    th,
-    td {
-        padding: 10px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #f4f4f4;
-    }
-
-    .actions a {
-        margin-right: 10px;
-        color: #3498db;
-    }
-
-    .actions a.delete {
-        color: #e74c3c;
-    }
-
-    .actions a.delete:hover {
-        text-decoration: underline;
-    }
-
-    .actions a:hover {
-        text-decoration: underline;
-    }
-
-    @media (max-width: 768px) {
-        table {
-            font-size: 14px;
-        }
-
-        th,
-        td {
-            padding: 8px;
-        }
-    }
-
-    .teacher-button {
-        position: absolute;
-        top: 20px;
-        left: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 60px;
-        height: 80px;
-        background: linear-gradient(135deg, #B2DFDB, #00796B);
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        text-decoration: none;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .teacher-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-    }
-
-    .teacher-button svg {
-        transition: fill 0.2s;
-    }
-
-    .teacher-button:hover svg circle {
-        fill: #E8F6F3;
-    }
-
-    .teacher-button:hover svg path {
-        stroke: #E8F6F3;
-    }
-</style>
+<link rel="stylesheet" href="css/student.css">
 
 <a href="page.php" class="teacher-button">
     <svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -353,7 +166,6 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
                             $activityId = $activity['id'];
                             $score = isset($scores[$student['id']][$activityId]) ? $scores[$student['id']][$activityId] : '';
 
-                            // Fetch the student's score for this activity
                             $studid = $student['id'];
                             $getscore = "SELECT * FROM scores WHERE activity_id = $activityId AND student_id = $studid";
                             $actscore = mysqli_query($con, $getscore);
@@ -364,18 +176,20 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
                                     name="scores[<?php echo $student['id']; ?>][<?php echo $activityId; ?>]"
                                     value="<?php echo htmlspecialchars($studscore['score']); ?>"
                                     min="0"
-                                    max="<?php echo isset($studscore['total_score']) ? htmlspecialchars($studscore['total_score']) : '100'; ?>" />
+                                    max="<?php echo $activity['total_score']; ?>" />
                             </td>
                         <?php endwhile; ?>
 
                         <td class='actions'>
                             <a href="page.php?student=edit&student_id=<?php echo $student['id']; ?>&section_id=<?php echo $student['section_id']; ?>">Edit</a>
                             <a href='delete_student.php?id=<?php echo $student['id']; ?>' class='delete' onclick='return confirm("Are you sure?")'>Delete</a>
+                            <a href="page.php?student=records&student_id=<?php echo $student['id']; ?>&section_id=<?php echo $student['section_id']; ?>">Records</a>
+
                         </td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
-        <!-- <button type="submit" name="save_scores">Save Scores</button> -->
+        <button type="submit" name="save_scores">Save Scores</button>
     </form>
 </div>
