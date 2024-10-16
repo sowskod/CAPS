@@ -35,7 +35,7 @@ body {
     width: 40%;
     margin: 50px auto;
     padding: 20px;
-    background-color: #000; /* Set black background */
+    background-color: #1a1a1a; /* Set black background */
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     text-align: center;
@@ -66,7 +66,7 @@ body {
 .signup-container input[type="email"],
 .signup-container input[type="password"],
 .signup-container input[type="number"] {
-    width: 100%;
+    width: 97%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -237,31 +237,55 @@ input:checked + .slider .toggle:before {
         </form>
     </div>
     <script>
-        // Function to toggle between light and dark mode
-        function toggleMode() {
-            const body = document.body;
-            const signupContainer = document.querySelector('.signup-container');
-            const isDarkMode = body.classList.contains('dark-mode');
-            body.classList.toggle('dark-mode', !isDarkMode);
-            body.classList.toggle('light-mode', isDarkMode);
-            signupContainer.classList.toggle('dark-mode', !isDarkMode);
-            signupContainer.classList.toggle('light-mode', isDarkMode);
-            localStorage.setItem('mode', isDarkMode ? 'light' : 'dark');
+        function validatePassword() {
+          var password = document.getElementById("password").value;
+          var confirmPassword = document.getElementById("confirm_password").value;
+  
+          if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            return false;
+          }
+  
+          return true;
         }
-
-        // Check local storage for mode preference
-        document.addEventListener('DOMContentLoaded', () => {
-            const mode = localStorage.getItem('mode') || 'dark';
-            const modeToggle = document.getElementById('modeToggle');
-            if (mode === 'light') {
-                document.body.classList.remove('dark-mode');
-                document.body.classList.add('light-mode');
-                document.querySelector('.signup-container').classList.remove('dark-mode');
-                document.querySelector('.signup-container').classList.add('light-mode');
-                modeToggle.checked = true;
-            }
-            modeToggle.addEventListener('change', toggleMode);
+  
+        function toggleMode() {
+          const body = document.body;
+          const signupContainer = document.querySelector(".signup-container");
+          const logoImg = document.querySelector(".logo");
+          const isDarkMode = body.classList.contains("dark-mode");
+          body.classList.toggle("dark-mode", !isDarkMode);
+          body.classList.toggle("light-mode", isDarkMode);
+          signupContainer.classList.toggle("dark-mode", !isDarkMode);
+          signupContainer.classList.toggle("light-mode", isDarkMode);
+  
+          if (isDarkMode) {
+            logoImg.src = "css/img/gray.png"; 
+          } else {
+            logoImg.src = "images/dont.png"; 
+          }
+  
+          localStorage.setItem("mode", isDarkMode ? "light" : "dark");
+        }
+  
+        document.addEventListener("DOMContentLoaded", () => {
+          const logoImg = document.querySelector(".logo");
+          const mode = localStorage.getItem("mode") || "dark";
+          const modeToggle = document.getElementById("modeToggle");
+          if (mode === "light") {
+            document.body.classList.remove("dark-mode");
+            document.body.classList.add("light-mode");
+            document
+              .querySelector(".signup-container")
+              .classList.remove("dark-mode");
+            document
+              .querySelector(".signup-container")
+              .classList.add("light-mode");
+            logoImg.src = "images/dont.png";
+            modeToggle.checked = true;
+          }
+          modeToggle.addEventListener("change", toggleMode);
         });
-    </script>
+      </script>
 </body>
 </html>
