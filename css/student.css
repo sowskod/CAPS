@@ -95,10 +95,11 @@ th,
 td {
   padding: 10px;
   text-align: left;
+  background: #feff99;
 }
 
 th {
-  background-color: #f4f4f4;
+  background-color: #adb8ca;
 }
 
 .actions a {
@@ -130,9 +131,6 @@ th {
 }
 
 .teacher-button {
-  position: absolute;
-  top: 20px;
-  left: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -143,6 +141,7 @@ th {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   text-decoration: none;
   transition: transform 0.2s, box-shadow 0.2s;
+  margin: 0 0 20px 0;
 }
 
 .teacher-button:hover {
@@ -160,4 +159,113 @@ th {
 
 .teacher-button:hover svg path {
   stroke: #e8f6f3;
+}
+.configs {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px #ccc solid;
+  border-radius: 10px;
+  width: 40%;
+}
+.toppart {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.hits {
+  width: 60%;
+  background: #ccc;
+  border-radius: 10px;
+}
+tr,
+td,
+th {
+  border: solid black 2px;
+  border-collapse: collapse;
+}
+.toppart {
+  background-color: #f8f9fa; 
+  padding: 20px;
+  border-radius: 8px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.configs {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mainbtns {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-student-form {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.add-student-form:hover {
+  background-color: #0056b3; 
+}
+
+.view {
+  background-color: #28a745; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.view:hover {
+  background-color: #218838; 
+}
+
+.upload-form,
+.activity-form {
+  background-color: #ffffff;
+  padding: 15px;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block; 
+  margin-bottom: 5px; 
+  font-weight: bold;
+}
+
+input[type="file"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ced4da; 
+  border-radius: 4px; 
+  box-sizing: border-box; 
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
 }

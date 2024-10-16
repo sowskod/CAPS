@@ -38,7 +38,7 @@ body {
   background: white;
   border: solid 1px #44444442;
   border-radius: 10px;
-  width: 90%;
+  width: 82vw;
 }
 .wrapper {
   display: flex;
@@ -78,14 +78,14 @@ body {
   gap: 10px;
 }
 .headersec a {
-  color: white; 
+  color: white;
   text-decoration: none;
   font-size: 18px;
   font-family: Arial, sans-serif;
 }
 
 .headersec a:hover {
-  text-decoration: underline; 
+  text-decoration: underline;
 }
 header .profile-picture img {
   width: 110px;

@@ -29,6 +29,9 @@ if (!$result || mysqli_num_rows($result) == 0) {
 
 $student = mysqli_fetch_assoc($result);
 
+// Disable foreign key checks
+mysqli_query($con, "SET FOREIGN_KEY_CHECKS=0;");
+
 // Delete student
 $deleteQuery = "DELETE FROM students WHERE id = $studentId AND user_id = $userId";
 
@@ -37,3 +40,6 @@ if (mysqli_query($con, $deleteQuery)) {
 } else {
     echo "Error deleting student: " . mysqli_error($con);
 }
+
+// Re-enable foreign key checks
+mysqli_query($con, "SET FOREIGN_KEY_CHECKS=1;");
