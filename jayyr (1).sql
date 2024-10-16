@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3308
--- Generation Time: Aug 30, 2024 at 09:28 AM
+-- Host: 127.0.0.1
+-- Generation Time: Oct 16, 2024 at 01:24 PM
 -- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- PHP Version: 8.1.17
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `jayyr`
 --
+CREATE DATABASE IF NOT EXISTS `jayyr` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `jayyr`;
 
 -- --------------------------------------------------------
 
@@ -254,7 +256,7 @@ CREATE TABLE `user` (
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `confirmation_status` enum('not confirmed','confirmed') NOT NULL,
-  `profile_picture` varchar(255) DEFAULT NULL,
+  `profile_picture` varchar(255) DEFAULT 'profile.png',
   `address` text NOT NULL,
   `confirmation_code` varchar(50) NOT NULL,
   `forgot_password_code` varchar(40) NOT NULL
@@ -268,7 +270,8 @@ INSERT INTO `user` (`user_id`, `first_name`, `last_name`, `subject`, `email`, `p
 (1, 'Jay R', 'Santos', 'CAPSTONE', 'jayrsantos114@gmail.com', 'aa', 'confirmed', 'photo_66cffc9c17476_FB_IMG_1621143430679.jpg', 'BLK-16 LOT-12 Bulacan Heights Catacte', '5wlho', ''),
 (2, 'TESTING', 'USER', 'HHAHA', 'jayrsantos144@gmail.com', 'bb', 'confirmed', NULL, '12', 'GRpCX', ''),
 (3, 'HAHA', 'hehe', 'a', 'jayrs@gmail.com', 'haha', 'confirmed', NULL, 'BLK-16 LOT-12 Bulacan Heights Catacte', 'Hf6sM', ''),
-(4, 'rst', 'rys', 'CAPSTONE', 'anicetosharah49@gmail.com', 'aa', 'not confirmed', NULL, '12', 'BjAqL', '');
+(4, 'rst', 'rys', 'CAPSTONE', 'anicetosharah49@gmail.com', 'aa', 'not confirmed', NULL, '12', 'BjAqL', ''),
+(6, 'Lance Grayson', 'Musngi', '', 'lance.musngi@gmail.com', 'Dec@1219', 'confirmed', 'css/img/profile.png', 'Sampaguita St.', 'vcRvk', '');
 
 --
 -- Indexes for dumped tables
@@ -314,7 +317,8 @@ ALTER TABLE `students`
   ADD PRIMARY KEY (`id`),
   ADD KEY `course_id` (`course_id`),
   ADD KEY `section_id` (`section_id`),
-  ADD KEY `fk_students_user` (`user_id`);
+  ADD KEY `fk_students_user` (`user_id`),
+  ADD KEY `fk_subject_id` (`subject_id`);
 
 --
 -- Indexes for table `student_activities`
@@ -393,7 +397,7 @@ ALTER TABLE `subjects`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables

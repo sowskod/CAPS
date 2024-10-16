@@ -29,11 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_activity'])) {
         $activityType = mysqli_real_escape_string($con, $_POST['activity_type']);
         $totalScore = intval($_POST['total_score']);
-        
+
         // Debugging output
         $query = "INSERT INTO activities (section_id, user_id, activity_type, total_score) VALUES ($sectionId, $userId, '$activityType', $totalScore)";
         echo $query; // Check the SQL query
-    
+
         if (mysqli_query($con, $query)) {
             echo '<script>alert("Activity added successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
         } else {
@@ -47,18 +47,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $studentId = intval($studentId);
                 $activityId = intval($activityId);
                 $score = intval($score);
-    
+
                 // Insert score with duplicate key handling
                 $query = "INSERT INTO scores (student_id, activity_id, score) VALUES ($studentId, $activityId, $score)
                           ON DUPLICATE KEY UPDATE score = VALUES(score)";
                 if (!mysqli_query($con, $query)) {
                     echo "Error saving score: " . mysqli_error($con);
                 }
-    
+
                 $scoresDeletedActivities[] = $activityId;
             }
         }
-    
+
         if (!empty($scoresDeletedActivities)) {
             // Prepare to update displayed status
             $activityIds = implode(',', array_unique($scoresDeletedActivities));
@@ -67,10 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo "Error updating activities display status: " . mysqli_error($con);
             }
         }
-    
+
         echo '<script>alert("Scores saved and activities updated successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
     }
-}    
+}
 
 // Fetch section details
 $sectionQuery = "SELECT * FROM sections WHERE id = $sectionId";
@@ -90,7 +90,7 @@ if (!$studentsResult) {
 
 
 // Fetch activities for the selected section
-$activitiesQuery = "SELECT * FROM activities WHERE section_id = $sectionId AND user_id = $userId AND displayed = 1";
+$activitiesQuery = "SELECT * FROM activities WHERE section_id = $sectionId AND user_id = $userId";
 $activitiesResult = mysqli_query($con, $activitiesQuery);
 
 // Fetch scores for each student and activity
@@ -104,291 +104,278 @@ while ($score = mysqli_fetch_assoc($scoresResult)) {
 }
 ?>
 
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
 
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-<!DOCTYPE html>
-<html lang="en">
+    h2 {
+        color: #333;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
+    a {
+        color: #3498db;
+        text-decoration: none;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    a:hover {
+        text-decoration: underline;
+    }
 
-        h2 {
-            color: #333;
-        }
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        text-decoration: none;
+        color: #333;
+    }
 
-        a {
-            color: #3498db;
-            text-decoration: none;
-        }
+    .back-button svg {
+        vertical-align: middle;
+    }
 
-        a:hover {
-            text-decoration: underline;
-        }
+    .add-student-form,
+    .view {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-bottom: 20px;
+        background-color: #3498db;
+        color: white;
+        border-radius: 4px;
+        text-align: center;
+    }
 
-        .back-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            text-decoration: none;
-            color: #333;
-        }
+    .add-student-form:hover,
+    .view:hover {
+        background-color: #2980b9;
+    }
 
-        .back-button svg {
-            vertical-align: middle;
-        }
+    form {
+        margin-bottom: 20px;
+    }
 
-        .add-student-form,
-        .view {
-            display: inline-block;
-            padding: 10px 20px;
-            margin-bottom: 20px;
-            background-color: #3498db;
-            color: white;
-            border-radius: 4px;
-            text-align: center;
-        }
+    form label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
 
-        .add-student-form:hover,
-        .view:hover {
-            background-color: #2980b9;
-        }
+    form input[type="file"] {
+        margin-bottom: 10px;
 
-        form {
-            margin-bottom: 20px;
-        }
+    }
 
-        form label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
+    form button {
+        padding: 10px 20px;
+        background-color: #3498db;
+        border: none;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+    }
 
-        form input[type="file"] {
-            margin-bottom: 10px;
+    form button:hover {
+        background-color: #2980b9;
+    }
 
-        }
+    .students {
+        margin-top: 20px;
+    }
 
-        form button {
-            padding: 10px 20px;
-            background-color: #3498db;
-            border: none;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
 
-        form button:hover {
-            background-color: #2980b9;
-        }
+    table,
+    th,
+    td {
+        border: 1px solid #ddd;
+    }
 
-        .students {
-            margin-top: 20px;
-        }
+    th,
+    td {
+        padding: 10px;
+        text-align: left;
+    }
 
+    th {
+        background-color: #f4f4f4;
+    }
+
+    .actions a {
+        margin-right: 10px;
+        color: #3498db;
+    }
+
+    .actions a.delete {
+        color: #e74c3c;
+    }
+
+    .actions a.delete:hover {
+        text-decoration: underline;
+    }
+
+    .actions a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
         table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        table,
-        th,
-        td {
-            border: 1px solid #ddd;
+            font-size: 14px;
         }
 
         th,
         td {
-            padding: 10px;
-            text-align: left;
+            padding: 8px;
         }
+    }
 
-        th {
-            background-color: #f4f4f4;
-        }
+    .teacher-button {
+        position: absolute;
+        top: 20px;
+        left: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 60px;
+        height: 80px;
+        background: linear-gradient(135deg, #B2DFDB, #00796B);
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
 
-        .actions a {
-            margin-right: 10px;
-            color: #3498db;
-        }
+    .teacher-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
 
-        .actions a.delete {
-            color: #e74c3c;
-        }
+    .teacher-button svg {
+        transition: fill 0.2s;
+    }
 
-        .actions a.delete:hover {
-            text-decoration: underline;
-        }
+    .teacher-button:hover svg circle {
+        fill: #E8F6F3;
+    }
 
-        .actions a:hover {
-            text-decoration: underline;
-        }
+    .teacher-button:hover svg path {
+        stroke: #E8F6F3;
+    }
+</style>
 
-        @media (max-width: 768px) {
-            table {
-                font-size: 14px;
-            }
-
-            th,
-            td {
-                padding: 8px;
-            }
-        }
-        .teacher-button {
-    position: absolute;
-    top: 20px;
-    left: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 60px; 
-    height: 80px; 
-    background: linear-gradient(135deg, #B2DFDB, #00796B); 
-    border-radius: 12px; 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
-    text-decoration: none; 
-    transition: transform 0.2s, box-shadow 0.2s; 
-}
-
-.teacher-button:hover {
-    transform: translateY(-3px); 
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); 
-}
-
-.teacher-button svg {
-    transition: fill 0.2s; 
-}
-
-.teacher-button:hover svg circle {
-    fill: #E8F6F3; 
-}
-
-.teacher-button:hover svg path {
-    stroke: #E8F6F3; 
-}
-
-    </style>
-    
-</head>
-
-<body>
 <a href="page.php" class="teacher-button">
     <svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        
-        <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2"/>
-      
-        <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2" />
+
+        <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
 </a>
 
 
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
-    <a href="page.php?student=add_student&section_id=<?php echo htmlspecialchars($sectionId); ?>" class="add-student-form">Add New Student</a>
+<a href="page.php?student=add_student&section_id=<?php echo htmlspecialchars($sectionId); ?>" class="add-student-form">Add New Student</a>
 
-    <button type="button" onclick="window.location.href='page.php?student=most_at_risk&section_id=<?php echo $sectionId; ?>'" class="view">View MOST at Risk</button>
+<button type="button" onclick="window.location.href='page.php?student=most_at_risk&section_id=<?php echo $sectionId; ?>'" class="view">View MOST at Risk</button>
 
-    <form method="POST" action="upload_students.php?section_id=<?php echo $sectionId; ?>" enctype="multipart/form-data">
-        <label for="file">Upload Excel File:</label>
-        <input type="file" name="file" id="file" accept=".xlsx, .xls">
-        <button type="submit">Upload</button>
-    </form>
+<form method="POST" action="upload_students.php?section_id=<?php echo $sectionId; ?>" enctype="multipart/form-data">
+    <label for="file">Upload Excel File:</label>
+    <input type="file" name="file" id="file" accept=".xlsx, .xls">
+    <button type="submit">Upload</button>
+</form>
+<form method="POST" action="page.php?student&section_id=<?php echo $sectionId; ?>">
+    <h3>Add Activity</h3>
+    <label for="activity_type">Activity Type:</label>
+    <select name="activity_type" id="activity_type" required>
+        <option value="quiz">Quiz</option>
+        <option value="exam">Exam</option>
+        <option value="activity">Activity</option>
+        <option value="attendance">Attendance</option>
+    </select>
+    <label for="total_score">Total Score:</label>
+    <input type="number" name="total_score" id="total_score" placeholder="Input Total or over score" required>
+    <button type="submit" name="add_activity">Add Activity</button>
+</form>
+
+
+
+<div class="students">
+    <h2>Students in Section <?php echo htmlspecialchars($sectionName); ?></h2>
+
     <form method="POST" action="page.php?student&section_id=<?php echo $sectionId; ?>">
-        <h3>Add Activity</h3>
-        <label for="activity_type">Activity Type:</label>
-        <select name="activity_type" id="activity_type" required>
-            <option value="quiz">Quiz</option>
-            <option value="exam">Exam</option>
-            <option value="activity">Activity</option>
-            <option value="attendance">Attendance</option>
-        </select>
-        <label for="total_score">Total Score:</label>
-        <input type="number" name="total_score" id="total_score" placeholder="Input Total or over score" required>
-        <button type="submit" name="add_activity">Add Activity</button>
-    </form>
-
-
-
-    <div class="students">
-        <h2>Students in Section <?php echo htmlspecialchars($sectionName); ?></h2>
-
-        <form method="POST" action="page.php?student&section_id=<?php echo $sectionId; ?>">
-            <table>
-                <thead>
+        <table>
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Email</th>
+                    <?php
+                    mysqli_data_seek($activitiesResult, 0);
+                    while ($activity = mysqli_fetch_assoc($activitiesResult)) :
+                    ?>
+                        <th><?php echo htmlspecialchars($activity['activity_type']); ?> (<?php echo htmlspecialchars($activity['total_score']); ?>)</th>
+                    <?php endwhile; ?>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                mysqli_data_seek($activitiesResult, 0);
+                while ($student = mysqli_fetch_assoc($studentsResult)) :
+                ?>
                     <tr>
-                        
-                        <th>Student Name</th>
-                        <th>Email</th>
+                        <td><?php echo htmlspecialchars($student['student_name']); ?></td>
+                        <td><?php echo htmlspecialchars($student['email']); ?></td>
                         <?php
-                        // Reset activities result pointer for score input
                         mysqli_data_seek($activitiesResult, 0);
                         while ($activity = mysqli_fetch_assoc($activitiesResult)) :
+                            $activityId = $activity['id'];
+                            $score = isset($scores[$student['id']][$activityId]) ? $scores[$student['id']][$activityId] : '';
+
+                            // Fetch the student's score for this activity
+                            $studid = $student['id'];
+                            $getscore = "SELECT * FROM scores WHERE activity_id = $activityId AND student_id = $studid";
+                            $actscore = mysqli_query($con, $getscore);
+                            $studscore = mysqli_fetch_assoc($actscore);
                         ?>
-                            <th><?php echo htmlspecialchars($activity['activity_type']); ?> (<?php echo htmlspecialchars($activity['total_score']); ?>)</th>
-                        <?php endwhile; ?>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    // Reset activities result pointer for score input
-                    mysqli_data_seek($activitiesResult, 0);
-                    while ($student = mysqli_fetch_assoc($studentsResult)) :
-                    ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($student['student_name']); ?></td>
-                            <td><?php echo htmlspecialchars($student['email']); ?></td>
-                            <?php
-                            // Reset activities result pointer to start
-                            mysqli_data_seek($activitiesResult, 0);
-                            while ($activity = mysqli_fetch_assoc($activitiesResult)) :
-                                $activityId = $activity['id'];
-                                $score = isset($scores[$student['id']][$activityId]) ? $scores[$student['id']][$activityId] : '';
-                            ?>
-                                <td>
-                                    <input type="number" name="scores[<?php echo $student['id']; ?>][<?php echo $activityId; ?>]" value="<?php echo htmlspecialchars($score); ?>" min="0" max="<?php echo $activity['total_score']; ?>" />
-                                </td>
-                            <?php endwhile; ?>
-                            <td class='actions'>
-                                <a href="page.php?student=edit&student_id=<?php echo $student['id']; ?>&section_id=<?php echo $student['section_id']; ?>">Edit</a>
-                                <a href='delete_student.php?id=<?php echo $student['id']; ?>' class='delete' onclick='return confirm("Are you sure?")'>Delete</a>
-                                <a href="page.php?student=records&student_id=<?php echo $student['id']; ?>&section_id=<?php echo $student['section_id']; ?>">Records</a>
-
+                            <td>
+                                <input style=" all: unset; width: 100%; height: 100%; " type="number"
+                                    name="scores[<?php echo $student['id']; ?>][<?php echo $activityId; ?>]"
+                                    value="<?php echo htmlspecialchars($studscore['score']); ?>"
+                                    min="0"
+                                    max="<?php echo isset($studscore['total_score']) ? htmlspecialchars($studscore['total_score']) : '100'; ?>" />
                             </td>
-                        </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
-            <button type="submit" name="save_scores">Save Scores</button>
-        </form>
+                        <?php endwhile; ?>
 
-
-    </div>
-
-</body>
-
-</html>
+                        <td class='actions'>
+                            <a href="page.php?student=edit&student_id=<?php echo $student['id']; ?>&section_id=<?php echo $student['section_id']; ?>">Edit</a>
+                            <a href='delete_student.php?id=<?php echo $student['id']; ?>' class='delete' onclick='return confirm("Are you sure?")'>Delete</a>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+        <!-- <button type="submit" name="save_scores">Save Scores</button> -->
+    </form>
+</div>

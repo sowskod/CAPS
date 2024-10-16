@@ -54,8 +54,6 @@ if (!$result) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Most at Risk Students</title>
     <style>
-       
-
         .container {
             background: #fff;
             border-radius: 8px;
@@ -156,53 +154,54 @@ if (!$result) {
         .back-button:hover {
             background-color: #2980b9;
         }
+
         .teacher-button {
-    position: absolute;
-    top: 20px;
-    left: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 60px; 
-    height: 80px; 
-    background: linear-gradient(135deg, #B2DFDB, #00796B);
-    border-radius: 12px; 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
-    text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s; 
-}
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 60px;
+            height: 80px;
+            background: linear-gradient(135deg, #B2DFDB, #00796B);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
 
-.teacher-button:hover {
-    transform: translateY(-3px); 
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); 
-}
+        .teacher-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
 
-.teacher-button svg {
-    transition: fill 0.2s;
-}
+        .teacher-button svg {
+            transition: fill 0.2s;
+        }
 
-.teacher-button:hover svg circle {
-    fill: #E8F6F3; 
-}
+        .teacher-button:hover svg circle {
+            fill: #E8F6F3;
+        }
 
-.teacher-button:hover svg path {
-    stroke: #E8F6F3;
-}
+        .teacher-button:hover svg path {
+            stroke: #E8F6F3;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <a class="teacher-button"  href="page.php?student&section_id=<?php echo htmlspecialchars($sectionId); ?>" class="back-button"><svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-   
-        <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2"/>
- 
-        <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg></a>
-    <br>
-    <br> 
-    <br>
-    <br>
+        <a class="teacher-button" href="page.php?student&section_id=<?php echo htmlspecialchars($sectionId); ?>" class="back-button"><svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2" />
+
+                <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg></a>
+        <br>
+        <br>
+        <br>
+        <br>
         <table>
             <thead>
                 <tr>
