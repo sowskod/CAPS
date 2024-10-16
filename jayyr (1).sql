@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2024 at 01:24 PM
+-- Generation Time: Oct 16, 2024 at 04:48 PM
 -- Server version: 10.4.28-MariaDB
--- PHP Version: 8.1.17
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -46,9 +46,8 @@ CREATE TABLE `activities` (
 --
 
 INSERT INTO `activities` (`id`, `name`, `description`, `created_at`, `section_id`, `user_id`, `activity_type`, `total_score`, `displayed`) VALUES
-(12, '', NULL, '2024-08-28 09:36:40', 68, 1, 'activity', 15, 0),
-(13, '', NULL, '2024-08-29 03:33:12', 68, 1, 'attendance', 1, 0),
-(14, '', NULL, '2024-08-29 05:10:25', 68, 1, 'exam', 70, 0);
+(46, '', NULL, '2024-10-16 14:45:42', 74, 6, 'quiz', 20, 1),
+(47, '', NULL, '2024-10-16 14:46:28', 74, 6, 'quiz', 10, 1);
 
 -- --------------------------------------------------------
 
@@ -105,15 +104,16 @@ CREATE TABLE `scores` (
 --
 
 INSERT INTO `scores` (`id`, `student_id`, `activity_id`, `score`, `created_at`, `updated_at`) VALUES
-(73, 72, 12, 13, '2024-08-28 17:44:11', '2024-08-29 11:35:32'),
-(74, 74, 12, 12, '2024-08-28 17:44:11', '2024-08-28 17:47:23'),
-(75, 75, 12, 13, '2024-08-28 17:44:11', '2024-08-28 17:50:11'),
-(76, 72, 13, 1, '2024-08-29 11:33:22', '2024-08-29 11:33:22'),
-(77, 74, 13, 1, '2024-08-29 11:33:22', '2024-08-29 13:11:10'),
-(78, 75, 13, 1, '2024-08-29 11:33:22', '2024-08-29 11:33:22'),
-(79, 72, 14, 56, '2024-08-29 13:10:43', '2024-08-29 13:10:43'),
-(80, 74, 14, 60, '2024-08-29 13:10:43', '2024-08-29 13:10:43'),
-(81, 75, 14, 50, '2024-08-29 13:10:43', '2024-08-29 13:11:28');
+(1167, 94, 46, 6, '2024-10-16 22:46:59', '2024-10-16 22:47:00'),
+(1168, 94, 47, 7, '2024-10-16 22:47:01', '2024-10-16 22:47:19'),
+(1169, 92, 46, 10, '2024-10-16 22:47:03', '2024-10-16 22:47:05'),
+(1170, 100, 46, 8, '2024-10-16 22:47:05', '2024-10-16 22:47:06'),
+(1171, 98, 46, 11, '2024-10-16 22:47:06', '2024-10-16 22:47:08'),
+(1172, 96, 46, 14, '2024-10-16 22:47:08', '2024-10-16 22:47:11'),
+(1173, 96, 47, 10, '2024-10-16 22:47:11', '2024-10-16 22:47:13'),
+(1174, 98, 47, 6, '2024-10-16 22:47:14', '2024-10-16 22:47:15'),
+(1175, 100, 47, 5, '2024-10-16 22:47:15', '2024-10-16 22:47:16'),
+(1176, 92, 47, 7, '2024-10-16 22:47:17', '2024-10-16 22:47:18');
 
 -- --------------------------------------------------------
 
@@ -134,7 +134,8 @@ CREATE TABLE `sections` (
 INSERT INTO `sections` (`id`, `section_name`, `user_id`) VALUES
 (68, '4A G1 CAPSTONE', 1),
 (69, '4B G2', 1),
-(72, '4A G2', 1);
+(72, '4A G2', 1),
+(74, '3B G1 Capstones', 6);
 
 -- --------------------------------------------------------
 
@@ -156,47 +157,20 @@ CREATE TABLE `students` (
   `sections` varchar(255) DEFAULT NULL,
   `cp_number` varchar(15) DEFAULT NULL,
   `program` varchar(50) DEFAULT NULL,
-  `course` varchar(50) DEFAULT NULL
+  `course` varchar(50) DEFAULT NULL,
+  `timestamp` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`id`, `student_name`, `email`, `course_id`, `section_id`, `section_name`, `user_id`, `subject_id`, `phone_number`, `courses`, `sections`, `cp_number`, `program`, `course`) VALUES
-(38, 'jayr santos', 'jayrsantos144@gmail.com', 3, 46, NULL, 1, 21, NULL, NULL, NULL, NULL, NULL, NULL),
-(46, 'joseph', 'josephadrianthenax@gmail.com', 3, 7, NULL, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL),
-(47, 'student ID', 'Name', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(48, '2002121', 'Jayr Santos', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(49, '2002324', 'Sharah Aniceto', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(50, '2002345', 'Joseph Madrideo', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(51, '2002136', 'Rosette Reyes', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(52, '2002524', 'Ezel Nisperos', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(53, '2002130', 'Miles Capangpangan', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(54, '2002021', 'David Bautista', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(55, 'sample', 'Name@gmail.com', 3, 46, NULL, 1, NULL, NULL, 'gender', 'email', NULL, NULL, NULL),
-(56, '2002121', 'Jayr Santos', NULL, 57, NULL, 1, NULL, NULL, 'male', 'arar@gmail.com', NULL, NULL, NULL),
-(57, '2002324', 'Sharah Aniceto', NULL, 57, NULL, 1, NULL, NULL, 'female', 'aaaa@gmail.com', NULL, NULL, NULL),
-(58, '2002345', 'Joseph Madrideo', NULL, 57, NULL, 1, NULL, NULL, 'male', 'hagdha@gmail.com', NULL, NULL, NULL),
-(59, '2002136', 'Rosette Reyes', NULL, 57, NULL, 1, NULL, NULL, 'female', 'rsttrys@gmail.com', NULL, NULL, NULL),
-(60, '2002524', 'Ezel Nisperos', NULL, 57, NULL, 1, NULL, NULL, 'female', 'ez@gmail.com', NULL, NULL, NULL),
-(61, '2002130', 'Miles Capangpangan', NULL, 57, NULL, 1, NULL, NULL, 'male', 'jwjw@gmail.com', NULL, NULL, NULL),
-(62, '2002021', 'David Bautista', NULL, 57, NULL, 1, NULL, NULL, 'male', 'jai@gmail.com', NULL, NULL, NULL),
-(63, 'jayr santos', 'jayrsantos114@gmail.com', 3, 63, NULL, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL),
-(64, 'jayr santos', 'jayrsantos114@gmail.com', 3, 64, NULL, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL),
-(65, 'jayr santos', 'jayrsantos114@gmail.com', 3, 65, NULL, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL),
-(66, 'joseph', 'jayrsantos114@gmail.com', 3, 66, NULL, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL),
-(67, 'jayr santos', 'jayrsantos114@gmail.com', 3, 67, NULL, 1, 2, NULL, NULL, NULL, NULL, NULL, NULL),
-(72, 'Jay R Santos ', 'jayrsantos114@gmail.com', NULL, 68, NULL, 1, NULL, NULL, NULL, NULL, '09918866661', 'BSIT', 'SIA'),
-(73, 'joseph', 'joseph@gmail.com', NULL, 69, NULL, 1, NULL, NULL, NULL, NULL, '87654321', 'BSIT', 'WEB2'),
-(74, 'Joseph Adrian Madrideo', 'joseph@gmail.com', NULL, 68, NULL, 1, NULL, NULL, NULL, NULL, '87654321', 'BSIT', 'CAPS'),
-(75, 'Aniceto Sharah', 'shh@gmail.com', NULL, 68, NULL, 1, NULL, NULL, NULL, NULL, '12345', 'BSIT', 'WEB2'),
-(77, '2002121', 'Jayr Santos', NULL, 69, NULL, 1, NULL, NULL, 'male', 'arar@gmail.com', NULL, NULL, NULL),
-(78, '2002324', 'Sharah Aniceto', NULL, 69, NULL, 1, NULL, NULL, 'female', 'aaaa@gmail.com', NULL, NULL, NULL),
-(79, '2002345', 'Joseph Madrideo', NULL, 69, NULL, 1, NULL, NULL, 'male', 'hagdha@gmail.com', NULL, NULL, NULL),
-(80, '2002136', 'Rosette Reyes', NULL, 69, NULL, 1, NULL, NULL, 'female', 'rsttrys@gmail.com', NULL, NULL, NULL),
-(81, '2002524', 'Ezel Nisperos', NULL, 69, NULL, 1, NULL, NULL, 'female', 'ez@gmail.com', NULL, NULL, NULL),
-(82, '2002130', 'Miles Capangpangan', NULL, 69, NULL, 1, NULL, NULL, 'male', 'jwjw@gmail.com', NULL, NULL, NULL);
+INSERT INTO `students` (`id`, `student_name`, `email`, `course_id`, `section_id`, `section_name`, `user_id`, `subject_id`, `phone_number`, `courses`, `sections`, `cp_number`, `program`, `course`, `timestamp`) VALUES
+(92, 'lance', 'lance.musngi@gmail.com', NULL, 74, NULL, 6, NULL, NULL, 'A', NULL, NULL, NULL, NULL, '10/13/2024 15:38:04'),
+(94, 'Joseph Adrian M. Madrideo', 'josephadrianthenax@gmail.com', NULL, 74, NULL, 6, NULL, NULL, 'A', NULL, NULL, NULL, NULL, '10/13/2024 16:13:39'),
+(96, 'Shara H. Aniceto', 'anicetosharah49@gmail.com ', NULL, 74, NULL, 6, NULL, NULL, 'A', NULL, NULL, NULL, NULL, '10/13/2024 16:18:18'),
+(98, 'Santos, Jay R U.', 'jayrsantos114@gmail.com', NULL, 74, NULL, 6, NULL, NULL, 'A', NULL, NULL, NULL, NULL, '10/13/2024 16:13:29'),
+(100, 'Rosette Lorianne C. Reyes', 'rsttrys@gmail.com', NULL, 74, NULL, 6, NULL, NULL, 'A', NULL, NULL, NULL, NULL, '10/13/2024 16:16:20');
 
 -- --------------------------------------------------------
 
@@ -271,7 +245,7 @@ INSERT INTO `user` (`user_id`, `first_name`, `last_name`, `subject`, `email`, `p
 (2, 'TESTING', 'USER', 'HHAHA', 'jayrsantos144@gmail.com', 'bb', 'confirmed', NULL, '12', 'GRpCX', ''),
 (3, 'HAHA', 'hehe', 'a', 'jayrs@gmail.com', 'haha', 'confirmed', NULL, 'BLK-16 LOT-12 Bulacan Heights Catacte', 'Hf6sM', ''),
 (4, 'rst', 'rys', 'CAPSTONE', 'anicetosharah49@gmail.com', 'aa', 'not confirmed', NULL, '12', 'BjAqL', ''),
-(6, 'Lance Grayson', 'Musngi', '', 'lance.musngi@gmail.com', 'Dec@1219', 'confirmed', 'css/img/profile.png', 'Sampaguita St.', 'vcRvk', '');
+(6, 'Lance Grayson', 'Musngi', '', 'lance.musngi@gmail.com', 'Dec@1219', 'confirmed', 'profile.png', 'Sampaguita St.', 'vcRvk', '');
 
 --
 -- Indexes for dumped tables
@@ -349,7 +323,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `activities`
 --
 ALTER TABLE `activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `activity_types`
@@ -367,19 +341,19 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT for table `scores`
 --
 ALTER TABLE `scores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1177;
 
 --
 -- AUTO_INCREMENT for table `sections`
 --
 ALTER TABLE `sections`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT for table `student_activities`
