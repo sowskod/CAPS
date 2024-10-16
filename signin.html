@@ -177,12 +177,12 @@
         border-radius: 50%;
       }
 
-      input:checked + .slider .toggle {
+      input:checked + .toggle {
         background-color: #2196f3;
       }
 
-      input:checked + .slider .toggle:before {
-        transform: translateX(26px);
+      input:checked + .toggle::before {
+        transform: translateX(25px);
       }
 
       form {
@@ -253,11 +253,10 @@
         loginContainer.classList.toggle("dark-mode", !isDarkMode);
         loginContainer.classList.toggle("light-mode", isDarkMode);
 
-       
         if (isDarkMode) {
-          logoImg.src = "css/img/gray.png"; 
+          logoImg.src = "css/img/gray.png";
         } else {
-          logoImg.src = "images/dont.png"; 
+          logoImg.src = "images/dont.png";
         }
 
         localStorage.setItem("mode", isDarkMode ? "light" : "dark");
