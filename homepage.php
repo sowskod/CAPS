@@ -9,7 +9,7 @@ $userId = $_SESSION['user_id'];
 
 include 'db.php';
 
-// Handle form submissions
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_section'])) {
         if (isset($_POST['section_name']) && !empty($_POST['section_name'])) {
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 
-    // Update Section
+
     if (isset($_POST['update_section'])) {
         if (isset($_POST['edit_id']) && !empty($_POST['edit_id']) && isset($_POST['section_name']) && !empty($_POST['section_name'])) {
             $editId = intval($_POST['edit_id']);
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Handle delete operation
+
 if (isset($_GET['delete_id'])) {
     $deleteId = intval($_GET['delete_id']);
     $query = "DELETE FROM sections WHERE id = $deleteId AND user_id = $userId";
@@ -73,7 +73,7 @@ if (isset($_GET['delete_id'])) {
         echo "Error deleting section: " . mysqli_error($con);
     }
 }
-// Fetch user data
+
 $query = "SELECT * FROM user WHERE user_id = $userId";
 $result = mysqli_query($con, $query);
 
@@ -83,17 +83,17 @@ if ($result) {
     die("Error fetching user data: " . mysqli_error($con));
 }
 
-// Fetch sections
+
 $query = "SELECT * FROM sections WHERE user_id = $userId";
 $result = mysqli_query($con, $query);
 if (!$result) {
     die("Query failed: " . mysqli_error($con));
 }
-// Initialize sort order and direction
-$sortOrder = 'ASC';
-$sortColumn = 'section_name'; // Default sort column
 
-// Check if a sort column and direction are specified in the URL
+$sortOrder = 'ASC';
+$sortColumn = 'section_name';
+
+
 if (isset($_GET['sort'])) {
     $sortColumn = $_GET['sort'];
     if (isset($_GET['order']) && $_GET['order'] === 'DESC') {
@@ -101,18 +101,18 @@ if (isset($_GET['sort'])) {
     }
 }
 
-$allowedColumns = ['section_name', 'id']; // Define which columns can be sorted
+$allowedColumns = ['section_name', 'id'];
 if (!in_array($sortColumn, $allowedColumns)) {
-    $sortColumn = 'section_name'; // Fallback to default
+    $sortColumn = 'section_name';
 }
 
-// Fetch sections with sorting
+
 $query = "SELECT * FROM sections WHERE user_id = $userId ORDER BY $sortColumn $sortOrder";
 $result = mysqli_query($con, $query);
 if (!$result) {
     die("Query failed: " . mysqli_error($con));
 }
-// Close the connection after all queries are done
+
 mysqli_close($con);
 ?>
 
@@ -204,7 +204,7 @@ mysqli_close($con);
         actions.style.display = currentlyVisible ? 'none' : 'block';
     }
 
-    // Optional: Hide actions when clicking outside
+
     document.addEventListener('click', function(event) {
         if (!event.target.closest('.section-item')) {
             document.querySelectorAll('.actions').forEach(a => a.style.display = 'none');

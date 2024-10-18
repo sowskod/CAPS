@@ -9,11 +9,9 @@ function generateRandomCode($length = 5)
     for ($i = 0; $i < $length; $i++) {
         $code .= $characters[rand(0, strlen($characters) - 1)];
     }
-
     return $code;
 }
 
-// Import PHPMailer classes into the global namespace
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -35,15 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $confirmationCode = generateRandomCode();
 
-    // Check if the email already exists in the database
     $checkEmailQuery = "SELECT * FROM `user` WHERE email = '$email'";
     $result = mysqli_query($con, $checkEmailQuery);
 
     if (mysqli_num_rows($result) > 0) {
-        // Email already exists in the database
+
         echo '<script>alert("Email is Already associated with an account."); window.location.href = "signup.html";</script>';
     } else {
-        // Email does not exist, proceed with registration
+
         $sql = "INSERT INTO `user` (`first_name`, `last_name`,`subject`, `email`, `password`, `address`, `confirmation_code`)
                 VALUES ('$firstname', '$lastname', '$subject', '$email', '$password', '$address',  '$confirmationCode')";
 
@@ -51,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             try {
                 echo '<script>alert("Please Check your Email for Confirmation");window.location.href = "confirm_account.php";</script>';
-                // Server settings for PHPMailer
+
                 $mail->SMTPDebug = SMTP::DEBUG_SERVER;
                 $mail->isSMTP();
                 $mail->Host       = 'smtp.gmail.com';
@@ -61,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $mail->SMTPSecure = 'ssl';
                 $mail->Port       = 465;
 
-                // Recipients and email content
+
                 $mail->setFrom($email, 'DontDrop');
                 $mail->addAddress($email);
                 $mail->isHTML(true);
@@ -70,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 please input your confirmation code: <b>$confirmationCode</b>";
                 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
-                // Send email
+
                 $mail->send();
                 echo 'Message has been sent';
             } catch (Exception $e) {

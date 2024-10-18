@@ -1,49 +1,31 @@
 <?php
-// Check if the user is logged in
 if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
-    header("Location: signin.html"); // Redirect if not logged in
+    header("Location: signin.html");
     exit();
 }
 
-// Include necessary database connection
 include 'db.php';
 
-// Retrieve user data based on the stored user ID
 $userId = $_SESSION['user_id'];
-
-// Perform a query to get user information from the database based on $userId
 $query = "SELECT * FROM `user` WHERE `user_id` = $userId";
 $result = mysqli_query($con, $query);
 
-// Check if the query was successful
 if ($result) {
-    // Fetch user information
     $userData = mysqli_fetch_assoc($result);
-    // Close the result set
     mysqli_free_result($result);
 } else {
-    // Handle the case where the query failed
     die("Query failed: " . mysqli_error($con));
 }
 
-// Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Check which form was submitted
     if (isset($_POST['upload_photo'])) {
-        // Handle profile picture upload/change
         if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
-            // Specify the upload directory
             $uploadDirectory = 'futos/';
-
-            // Generate a unique filename
             $fileName = uniqid('photo_') . '_' . basename($_FILES["profile_picture"]["name"]);
-
-            // Set the complete path for the uploaded file
             $filePath = $uploadDirectory . $fileName;
 
-            // Move the uploaded file to the specified directory
             if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $filePath)) {
-                // Update the user's profile picture in the database
+
                 $updateQuery = "UPDATE user SET profile_picture = '$fileName' WHERE user_id = $userId";
 
                 if (mysqli_query($con, $updateQuery)) {
@@ -58,9 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo '<script>alert("Please select a file.")</script>';
         }
     } elseif (isset($_POST['remove_photo'])) {
-        // Handle profile picture removal
-        $defaultPicture = 'profile.png'; // Set the default picture
+        $defaultPicture = 'profile.png';
         $updateQuery = "UPDATE user SET profile_picture = '$defaultPicture' WHERE user_id = $userId";
+
 
         if (mysqli_query($con, $updateQuery)) {
             echo '<script>alert("Profile picture removed. Default picture set.");window.location.href = "page.php?settings";</script>';
@@ -68,11 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Error resetting profile picture in the database: " . mysqli_error($con);
         }
     } elseif (isset($_POST['change_password'])) {
-        // Handle password change
+
         $currentPassword = $_POST['current_password'];
         $newPassword = $_POST['new_password'];
-
-
         if ($userData['password'] === $currentPassword) {
 
             if (!empty($newPassword)) {
@@ -118,28 +98,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             WHERE user_id = $userId";
 
         if (mysqli_query($con, $updateAccountQuery)) {
-            // Success message
             echo '<script>alert("Account information updated successfully!");window.location.href = "page.php?settings";</script>';
         } else {
-            // Error message if database update fails
             echo "Error updating account information in the database: " . mysqli_error($con);
         }
     } elseif (isset($_POST['logout'])) {
-        // Unset all session variables
         $_SESSION = array();
-
-        // Destroy the session
         session_destroy();
-
-        // Redirect to the login page
         header("Location: signin.html");
         exit();
     }
 }
-// Close the database connection
+
 mysqli_close($con);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -350,8 +322,6 @@ mysqli_close($con);
 </head>
 
 <body>
-
-
     <link rel="stylesheet" href="css\global.css">
     <link rel="stylesheet" href="css\homepage.css">
 

@@ -1,5 +1,5 @@
 <?php
-// Import PHPMailer classes into the global namespace
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -13,19 +13,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $message = $_POST['message'];
 
-    // Validate email
+
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo '<script>alert("Invalid email address. Please provide a valid email address.");</script>';
-        exit; // Stop execution if email is invalid
+        exit;
     }
 
-    // Email address where you want to receive the messages
+
     $to = "jayrsantos114@gmail.com";
 
-    // Subject of the email
     $subject = "Message from $name";
 
-    // Email body
     $body = "Name: $name\n";
     $body .= "Email: $email\n\n";
     $body .= "Message:\n$message";
@@ -33,22 +31,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail = new PHPMailer(true);
 
     try {
-        // Server settings for PHPMailer
-        $mail->SMTPDebug = SMTP::DEBUG_OFF;    // Disable verbose debug output
+
+        $mail->SMTPDebug = SMTP::DEBUG_OFF;
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'dontdropassist@gmail.com';   // Your Gmail address
-        $mail->Password   = 'zzqz kqfl ijry wjec';   // Your Gmail app password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;  // Enable SSL encryption
+        $mail->Username   = 'dontdropassist@gmail.com';
+        $mail->Password   = 'zzqz kqfl ijry wjec';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
-        // Recipients
-        $mail->setFrom('dontdropassist@gmail.com', 'Notification Service');
-        $mail->addAddress($to);   // Add your email address
 
-        // Content
-        $mail->isHTML(false);   // Set email format to plain text
+        $mail->setFrom('dontdropassist@gmail.com', 'Notification Service');
+        $mail->addAddress($to);
+
+
+        $mail->isHTML(false);
         $mail->Subject = $subject;
         $mail->Body    = $body;
 

@@ -44,7 +44,7 @@ function generateRandomCode($length = 5)
     return $code;
 }
 
-// Import PHPMailer classes into the global namespace
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -61,12 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirmationCode = generateRandomCode();
 
     if (!empty($email)) {
-        // Check if the email exists in the database
+
         $checkEmailQuery = "SELECT * FROM `user` WHERE email = '$email'";
         $result = mysqli_query($con, $checkEmailQuery);
 
         if (mysqli_num_rows($result) > 0) {
-            // Email exists, proceed with updating and sending email
+
             $sql = "UPDATE `user` SET forgot_password_code = '$confirmationCode' WHERE email = '$email'";
 
             if (mysqli_query($con, $sql)) {
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 try {
                     echo '<script>alert("Please Check your Email for Reset Instructions");window.location.href = "confirm_account_forgot.php";</script>';
-                    // Server settings for PHPMailer
+
                     $mail->SMTPDebug = SMTP::DEBUG_SERVER;
                     $mail->isSMTP();
                     $mail->Host       = 'smtp.gmail.com';
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $mail->SMTPSecure = 'ssl';
                     $mail->Port       = 465;
 
-                    // Recipients and email content
+
                     $mail->setFrom($email, 'JayStore');
                     $mail->addAddress($email);
                     $mail->isHTML(true);
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 please input your code: <b>$confirmationCode</b>";
                     $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
-                    // Send email
+
                     $mail->send();
                     echo 'Message has been sent';
                 } catch (Exception $e) {
@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo "Error: " . mysqli_error($con);
             }
         } else {
-            // Email does not exist in the database
+
             echo '<script>alert("Email Not Found");window.location.href = "forgot_password.html";</script>';
         }
     } else {

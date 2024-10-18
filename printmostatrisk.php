@@ -1,20 +1,20 @@
 <?php
 session_start();
 
-// Check if the user is logged in
+
 if (!isset($_SESSION['user_id'])) {
     die("User is not logged in. Please log in first.");
 }
 
 $userId = $_SESSION['user_id'];
 
-// Include the database connection file
+
 include 'db.php';
 
 // Fetch section ID
 $sectionId = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
 
-// Fetch student records and calculate risk index, ordered by risk index descending
+
 $query = "SELECT students.id, students.student_name, students.email, 
             SUM(CASE WHEN activities.activity_type != 'attendance' THEN 1 ELSE 0 END) AS total_activities, 
             SUM(CASE WHEN activities.activity_type = 'attendance' AND scores.score = 0 THEN 1 ELSE 0 END) AS absences, 
@@ -35,10 +35,9 @@ if (!$result) {
     die("Error fetching data: " . mysqli_error($con));
 }
 
-// Load TCPDF library
+
 require_once('tcpdf/tcpdf.php');
 
-// Create a new PDF document
 $pdf = new TCPDF();
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Your Name');
@@ -47,10 +46,10 @@ $pdf->SetMargins(10, 10, 10);
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 $pdf->AddPage();
 
-// Set font
+
 $pdf->SetFont('helvetica', '', 12);
 
-// Create the HTML table
+
 $html = '
 <h2 style="text-align:center;">Most at Risk Students</h2>
 <table border="1" cellpadding="4">
@@ -70,7 +69,7 @@ if (mysqli_num_rows($result) > 0) {
         $low_scores = $row['low_scores'];
         $absences = $row['absences'];
 
-        $low_score_threshold = 0.5; // 50% threshold for considering a score as low
+        $low_score_threshold = 0.5;
         $absent_threshold = 3;
         $risk_index = 0;
         $risk_color = 'green';
@@ -81,7 +80,7 @@ if (mysqli_num_rows($result) > 0) {
             $risk_color = $risk_index > 0.7 ? 'red' : ($risk_index > 0.4 ? 'orange' : 'green');
         }
 
-        // Risk index color for HTML display
+
         $risk_index_color = $risk_color == 'red' ? '#e74c3c' : ($risk_color == 'orange' ? '#f39c12' : '#2ecc71');
 
         $html .= '<tr>
@@ -101,11 +100,11 @@ if (mysqli_num_rows($result) > 0) {
 
 $html .= '</tbody></table>';
 
-// Output the HTML content
+
 $pdf->writeHTML($html, true, false, true, false, '');
 
-// Close and output PDF document
-$pdf->Output('most_at_risk_students.pdf', 'I'); // 'I' for inline display in browser
 
-// Close the database connection
+$pdf->Output('most_at_risk_students.pdf', 'I');
+
+
 mysqli_close($con);

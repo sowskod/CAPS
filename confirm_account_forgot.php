@@ -1,26 +1,26 @@
 <?php
-session_start(); // Start the session
+session_start();
 
 include 'db.php';
 
-// Check if the form is submitted
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get confirmation code from the form
+
     $userConfirmationCode = $_POST['confirmation_code'];
 
-    // Check if the confirmation code is not empty
+
     if (!empty($userConfirmationCode)) {
-        // Check confirmation code in a case-insensitive manner
+
         $checkCodeQuery = "SELECT * FROM user WHERE forgot_password_code = '$userConfirmationCode'";
-        
+
         $result = mysqli_query($con, $checkCodeQuery);
 
         if ($result) {
             if (mysqli_num_rows($result) > 0) {
-                // Store the confirmation code in the session
+
                 $_SESSION['reset_password_code'] = $userConfirmationCode;
 
-                // Redirect to reset_password.html
+
                 header("Location: reset_password.html");
                 exit();
             } else {
@@ -34,11 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Close the database connection
+
 mysqli_close($con);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -113,21 +114,25 @@ mysqli_close($con);
         }
     </style>
 </head>
+
 <body>
-<div class="form-container">
-    <img src="images/dont.png" alt="Logo">
-    
-    <?php if (isset($invalidCode) && $invalidCode) { ?>
-        echo '<script>alert("Invalid Code");window.location.href = "confirm_account_forgot.php";</script>';
-    <?php } 
-    else { ?>
-        <h1>Verify Your Account</h1>
-        <form action="confirm_account_forgot.php" method="POST">
-            <label for="confirmation_code">Confirmation Code:</label>
-            <input type="text" name="confirmation_code" required>
-            <button type="submit">Confirm Account</button>
-        </form>
-    <?php } ?>
-</div>
+    <div class="form-container">
+        <img src="images/dont.png" alt="Logo">
+
+        <?php if (isset($invalidCode) && $invalidCode) { ?>
+            echo '<script>
+                alert("Invalid Code");
+                window.location.href = "confirm_account_forgot.php";
+            </script>';
+        <?php } else { ?>
+            <h1>Verify Your Account</h1>
+            <form action="confirm_account_forgot.php" method="POST">
+                <label for="confirmation_code">Confirmation Code:</label>
+                <input type="text" name="confirmation_code" required>
+                <button type="submit">Confirm Account</button>
+            </form>
+        <?php } ?>
+    </div>
 </body>
+
 </html>

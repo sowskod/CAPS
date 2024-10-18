@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId = $_SESSION['user_id'];
 
-// Include the database connection file
+
 include 'db.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -20,13 +20,10 @@ require 'C:\xampp\htdocs\idrop\PHPMailer\src\Exception.php';
 require 'C:\xampp\htdocs\idrop\PHPMailer\src\PHPMailer.php';
 require 'C:\xampp\htdocs\idrop\PHPMailer\src\SMTP.php';
 
-// Import required files
 
-
-// Fetch section ID
 $sectionId = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
 
-// Fetch student records and calculate risk index
+
 $query = "SELECT students.id, students.student_name, students.email, 
             SUM(CASE WHEN activities.activity_type != 'attendance' THEN 1 ELSE 0 END) AS total_activities, 
             SUM(CASE WHEN activities.activity_type = 'attendance' AND scores.score = 0 THEN 1 ELSE 0 END) AS absences, 
@@ -43,7 +40,7 @@ if (!$result) {
     die("Error fetching data: " . mysqli_error($con));
 }
 
-// Loop through the students to check risk index and send alerts
+
 while ($row = mysqli_fetch_assoc($result)) {
     $total_activities = $row['total_activities'];
     $low_scores = $row['low_scores'];
@@ -82,5 +79,3 @@ while ($row = mysqli_fetch_assoc($result)) {
         }
     }
 }
-
-// Close the database connection

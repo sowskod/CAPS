@@ -1,25 +1,25 @@
 <?php
 include 'db.php';
 
-// Check if the form is submitted
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get confirmation code from the form
+
     $userConfirmationCode = mysqli_real_escape_string($con, $_POST['confirmation_code']);
 
-    // Check if the confirmation code is not empty
+
     if (!empty($userConfirmationCode)) {
-        // Check if the confirmation code exists in the database
+
         $checkCodeQuery = "SELECT * FROM user WHERE confirmation_code = '$userConfirmationCode'";
         $result = mysqli_query($con, $checkCodeQuery);
 
         if ($result && mysqli_num_rows($result) > 0) {
-            // Update confirmation status to 'confirmed'
+
             $updateStatusQuery = "UPDATE user SET confirmation_status = 'confirmed' WHERE confirmation_code = '$userConfirmationCode'";
             if (mysqli_query($con, $updateStatusQuery)) {
                 echo '<script>alert("Account confirmed!");</script>';
-                // Redirect to signin.html
+
                 echo '<script>window.location.href = "signin.html";</script>';
-                exit; // Ensure no further code is executed
+                exit;
             } else {
                 echo "Error updating confirmation status: " . mysqli_error($con);
             }
@@ -31,12 +31,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Close the database connection
+
 mysqli_close($con);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -111,19 +112,21 @@ mysqli_close($con);
         }
     </style>
 </head>
+
 <body>
-    
-<div class="form-container">
-    <img src="images/dont.png" alt="Logo">
-    
+
+    <div class="form-container">
+        <img src="images/dont.png" alt="Logo">
 
 
 
-        <h1 >Verify Your Account</h1>
+
+        <h1>Verify Your Account</h1>
         <form action="confirm_account.php" method="POST">
-        <label for="confirmation_code">Confirmation Code:</label>
-        <input type="text" name="confirmation_code" required>
-        <button type="submit">Confirm Account</button>
+            <label for="confirmation_code">Confirmation Code:</label>
+            <input type="text" name="confirmation_code" required>
+            <button type="submit">Confirm Account</button>
     </div>
 </body>
+
 </html>

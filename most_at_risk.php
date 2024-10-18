@@ -8,14 +8,12 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId = $_SESSION['user_id'];
 
-// Include the database connection file
 include 'db.php';
-
 
 if (!$con) {
     die("Database connection failed: " . mysqli_connect_error());
 }
-// Fetch section ID
+
 $sectionId = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
 $sectionQuery = "SELECT * FROM sections WHERE id = ?";
 $sectionStmt = mysqli_prepare($con, $sectionQuery);
@@ -26,7 +24,7 @@ $section = mysqli_fetch_assoc($sectionResult);
 $sectionName = htmlspecialchars($section['section_name']);
 $sectionId = intval($section['id']);
 mysqli_stmt_close($sectionStmt);
-// Fetch student records and calculate risk index
+
 $query = "SELECT students.id, students.student_name, students.email, 
             SUM(CASE WHEN activities.activity_type != 'attendance' THEN 1 ELSE 0 END) AS total_activities, 
             SUM(CASE WHEN activities.activity_type = 'attendance' AND scores.score = 0 THEN 1 ELSE 0 END) AS absences, 
@@ -273,7 +271,7 @@ if (!$result) {
 </html>
 
 <?php
-// Close the database connection
+
 mysqli_close($con);
 ?>
 <?php

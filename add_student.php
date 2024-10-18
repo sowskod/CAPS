@@ -1,25 +1,20 @@
 <?php
 
-
-// Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     die("User is not logged in. Please log in first.");
 }
 
 $userId = $_SESSION['user_id'];
 
-// Include the database connection file
-include 'db.php'; // Ensure this file contains the database connection code
 
-// Retrieve section_id from the URL
+include 'db.php';
 $sectionId = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
 
-// Validate section_id
 if ($sectionId <= 0) {
     die("Invalid section ID.");
 }
 
-// Fetch section details to confirm it exists
+
 $sectionCheckQuery = "SELECT COUNT(*) AS count FROM sections WHERE id = $sectionId";
 $result = mysqli_query($con, $sectionCheckQuery);
 $row = mysqli_fetch_assoc($result);
@@ -28,15 +23,13 @@ if ($row['count'] == 0) {
     die("Invalid section ID.");
 }
 
-// Handle student addition
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_student'])) {
-    // Get the form data and sanitize it
+
     $studentNumber = mysqli_real_escape_string($con, $_POST['student_number']);
     $studentName = mysqli_real_escape_string($con, $_POST['student_name']);
     $studentEmail = mysqli_real_escape_string($con, $_POST['student_email']);
 
 
-    // SQL query to insert the data into the students table
     $query = "INSERT INTO students (user_id, section_id, student_number, student_name, email) 
               VALUES ($userId, $sectionId,'$studentNumber', '$studentName', '$studentEmail')";
 

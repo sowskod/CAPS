@@ -1,292 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign In</title>
-    <link rel="stylesheet" href="stylez.css">
+    <link rel="stylesheet" href="stylez.css" />
 
     <script>
-        function validatePassword() {
-            var password = document.getElementById("password").value;
-            var confirmPassword = document.getElementById("confirm_password").value;
-    
-            if (password !== confirmPassword) {
-                alert("Password is not match");
-                return false;
-            }
-    
-            return true;
+      function validatePassword() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirm_password").value;
+
+        if (password !== confirmPassword) {
+          alert("Password is not match");
+          return false;
         }
+
+        return true;
+      }
     </script>
-    <link rel="icon" href="css/img/logo.ico">
-    
-<style>
-/* General styling */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #000; /* Set black background */
-    color: #fff; /* Set text color to white */
-}
+    <link rel="icon" href="css/img/logo.ico" />
 
-/* Signup container */
-.signup-container {
-    width: 40%;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #1a1a1a; /* Set black background */
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    text-align: center;
-}
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #000;
+        color: #fff;
+      }
 
-/* Logo */
-.logo {
-    display: block;
-    margin: 0 auto 20px;
-    width: 150px; /* Adjust size as needed */
-    height: auto;
-}
+      .signup-container {
+        width: 40%;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #1a1a1a;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
 
-.signup-container h2 {
-    margin-bottom: 20px;
-}
+      .logo {
+        display: block;
+        margin: 0 auto 20px;
+        width: 150px;
+        height: auto;
+      }
 
-.signup-container form {
-    display: flex;
-    flex-direction: column;
-}
+      .signup-container h2 {
+        margin-bottom: 20px;
+      }
 
-.signup-container label {
-    margin-bottom: 10px;
-}
+      .signup-container form {
+        display: flex;
+        flex-direction: column;
+      }
 
-.signup-container input[type="text"],
-.signup-container input[type="email"],
-.signup-container input[type="password"],
-.signup-container input[type="number"] {
-    width: 97%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+      .signup-container label {
+        margin-bottom: 10px;
+      }
 
-.signup-container input[type="submit"] {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    background-color: #046c2d;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+      .signup-container input[type="text"],
+      .signup-container input[type="email"],
+      .signup-container input[type="password"],
+      .signup-container input[type="number"] {
+        width: 97%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
 
-.signup-container input[type="submit"]:hover {
-    background-color: #45a049;
-}
+      .signup-container input[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        background-color: #046c2d;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
 
-.signup-container a {
-    color: white;
-    text-decoration: none;
-}
+      .signup-container input[type="submit"]:hover {
+        background-color: #45a049;
+      }
 
-.signup-container a:hover {
-    text-decoration: underline;
-}
+      .signup-container a {
+        color: white;
+        text-decoration: none;
+      }
 
-/* Light mode styling */
-body.light-mode {
-    background-color: #f0f0f0;
-    color: #000;
-}
+      .signup-container a:hover {
+        text-decoration: underline;
+      }
 
-.signup-container.light-mode {
-    background-color: #fff;
-    color: #000;
-}
+      body.light-mode {
+        background-color: #f0f0f0;
+        color: #000;
+      }
 
-.signup-container.light-mode input[type="text"],
-.signup-container.light-mode input[type="email"],
-.signup-container.light-mode input[type="password"],
-.signup-container.light-mode input[type="number"] {
-    background-color: #fff;
-    color: #000;
-    border: 1px solid #ccc;
-}
+      .signup-container.light-mode {
+        background-color: #fff;
+        color: #000;
+      }
 
-.signup-container.light-mode input[type="submit"] {
-    background-color: #046c2d;
-    color: #fff;
-}
+      .signup-container.light-mode input[type="text"],
+      .signup-container.light-mode input[type="email"],
+      .signup-container.light-mode input[type="password"],
+      .signup-container.light-mode input[type="number"] {
+        background-color: #fff;
+        color: #000;
+        border: 1px solid #ccc;
+      }
 
-.signup-container.light-mode a {
-    color: #000;
-}
+      .signup-container.light-mode input[type="submit"] {
+        background-color: #046c2d;
+        color: #fff;
+      }
 
-/* Toggle switch styling */
-.switch {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
+      .signup-container.light-mode a {
+        color: #000;
+      }
 
-.switch input {
-    display: none;
-}
+      .switch {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
 
-.slider {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-}
+      .switch input {
+        display: none;
+      }
 
-.slider::before {
-    content: "Light";
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #000;
-    font-size: 14px;
-    transition: color 0.3s;
-}
+      .slider {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
 
-.slider::after {
-    content: "Dark";
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #fff;
-    font-size: 14px;
-    transition: color 0.3s;
-}
+      .slider::before {
+        content: "Light";
+        position: absolute;
+        left: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #000;
+        font-size: 14px;
+        transition: color 0.3s;
+      }
 
-.slider .toggle {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 34px;
-}
+      .slider::after {
+        content: "Dark";
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #fff;
+        font-size: 14px;
+        transition: color 0.3s;
+      }
 
-.slider .toggle:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-}
+      .slider .toggle {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
 
-input:checked + .slider .toggle {
-    background-color: #2196F3;
-}
+      .slider .toggle:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
 
-input:checked + .slider .toggle:before {
-    transform: translateX(26px);
-}
-</style>
+      input:checked + .slider .toggle {
+        background-color: #2196f3;
+      }
 
-</head>
-<body class="dark-mode">
+      input:checked + .slider .toggle:before {
+        transform: translateX(26px);
+      }
+    </style>
+  </head>
+  <body class="dark-mode">
     <div class="switch">
-        <label class="slider">
-            <input type="checkbox" id="modeToggle">
-            <div class="toggle"></div>
-        </label>
+      <label class="slider">
+        <input type="checkbox" id="modeToggle" />
+        <div class="toggle"></div>
+      </label>
     </div>
-    <!--Navigation Bar-->
 
     <div class="signup-container dark-mode">
-        <img class="logo" src="images/dont.png" alt="Logo">
-        <h2>Create new Account</h2>
-        <form action="verify.php" method="POST">
-            <p>Already Registered?<a href="signin.html">Login</a></p>
-             
-            <label for="first_name">First Name</label>
-            <input type="text" name="firstname" placeholder="First Name" id="firstname" required>
+      <img class="logo" src="images/dont.png" alt="Logo" />
+      <h2>Create new Account</h2>
+      <form action="verify.php" method="POST">
+        <p>Already Registered?<a href="signin.html">Login</a></p>
 
-            <label for="last_name">Last Name</label>
-            <input type="text" name="lastname" placeholder="Last Name" id="lastname" required>
+        <label for="first_name">First Name</label>
+        <input
+          type="text"
+          name="firstname"
+          placeholder="First Name"
+          id="firstname"
+          required
+        />
 
-            <label for="email">Email:</label>
-            <input type="email" name="email" placeholder="Email" id="email" required>
+        <label for="last_name">Last Name</label>
+        <input
+          type="text"
+          name="lastname"
+          placeholder="Last Name"
+          id="lastname"
+          required
+        />
 
-            <label for="password">Password:</label>
-            <input type="password" name="password" placeholder="Password" id="password" required>
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          id="email"
+          required
+        />
 
-            <label for="confirm_password">Confirm Password:</label>
-            <input type="password" name="confirm_password" placeholder="Confirm Password" id="confirm_password" required>
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          id="password"
+          required
+        />
 
-            <label for="address">Address:</label>
-            <input type="text" name="address" placeholder="Address" id="address" required>
+        <label for="confirm_password">Confirm Password:</label>
+        <input
+          type="password"
+          name="confirm_password"
+          placeholder="Confirm Password"
+          id="confirm_password"
+          required
+        />
 
-            <input type="submit" value="Create Account">
-        </form>
+        <label for="address">Address:</label>
+        <input
+          type="text"
+          name="address"
+          placeholder="Address"
+          id="address"
+          required
+        />
+
+        <input type="submit" value="Create Account" />
+      </form>
     </div>
     <script>
-        function validatePassword() {
-          var password = document.getElementById("password").value;
-          var confirmPassword = document.getElementById("confirm_password").value;
-  
-          if (password !== confirmPassword) {
-            alert("Passwords do not match");
-            return false;
-          }
-  
-          return true;
+      function validatePassword() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirm_password").value;
+
+        if (password !== confirmPassword) {
+          alert("Passwords do not match");
+          return false;
         }
-  
-        function toggleMode() {
-          const body = document.body;
-          const signupContainer = document.querySelector(".signup-container");
-          const logoImg = document.querySelector(".logo");
-          const isDarkMode = body.classList.contains("dark-mode");
-          body.classList.toggle("dark-mode", !isDarkMode);
-          body.classList.toggle("light-mode", isDarkMode);
-          signupContainer.classList.toggle("dark-mode", !isDarkMode);
-          signupContainer.classList.toggle("light-mode", isDarkMode);
-  
-          if (isDarkMode) {
-            logoImg.src = "css/img/gray.png"; 
-          } else {
-            logoImg.src = "images/dont.png"; 
-          }
-  
-          localStorage.setItem("mode", isDarkMode ? "light" : "dark");
+
+        return true;
+      }
+
+      function toggleMode() {
+        const body = document.body;
+        const signupContainer = document.querySelector(".signup-container");
+        const logoImg = document.querySelector(".logo");
+        const isDarkMode = body.classList.contains("dark-mode");
+        body.classList.toggle("dark-mode", !isDarkMode);
+        body.classList.toggle("light-mode", isDarkMode);
+        signupContainer.classList.toggle("dark-mode", !isDarkMode);
+        signupContainer.classList.toggle("light-mode", isDarkMode);
+
+        if (isDarkMode) {
+          logoImg.src = "css/img/gray.png";
+        } else {
+          logoImg.src = "images/dont.png";
         }
-  
-        document.addEventListener("DOMContentLoaded", () => {
-          const logoImg = document.querySelector(".logo");
-          const mode = localStorage.getItem("mode") || "dark";
-          const modeToggle = document.getElementById("modeToggle");
-          if (mode === "light") {
-            document.body.classList.remove("dark-mode");
-            document.body.classList.add("light-mode");
-            document
-              .querySelector(".signup-container")
-              .classList.remove("dark-mode");
-            document
-              .querySelector(".signup-container")
-              .classList.add("light-mode");
-            logoImg.src = "css/img/gray.png";
-            modeToggle.checked = true;
-          }
-          modeToggle.addEventListener("change", toggleMode);
-        });
-      </script>
-</body>
+
+        localStorage.setItem("mode", isDarkMode ? "light" : "dark");
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const logoImg = document.querySelector(".logo");
+        const mode = localStorage.getItem("mode") || "dark";
+        const modeToggle = document.getElementById("modeToggle");
+        if (mode === "light") {
+          document.body.classList.remove("dark-mode");
+          document.body.classList.add("light-mode");
+          document
+            .querySelector(".signup-container")
+            .classList.remove("dark-mode");
+          document
+            .querySelector(".signup-container")
+            .classList.add("light-mode");
+          logoImg.src = "css/img/gray.png";
+          modeToggle.checked = true;
+        }
+        modeToggle.addEventListener("change", toggleMode);
+      });
+    </script>
+  </body>
 </html>

@@ -1,18 +1,18 @@
 <?php
 
 
-// Check if the user is logged in
+
 if (!isset($_SESSION['user_id'])) {
     die("User is not logged in. Please log in first.");
 }
 
-// Include the database connection file
+
 include 'db.php';
 
 $scoreId = isset($_GET['score_id']) ? intval($_GET['score_id']) : 0;
 $sectionId = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
 
-// Fetch current score details
+
 $query = "SELECT sc.student_id, a.activity_type, sc.score, a.total_score 
           FROM scores sc 
           JOIN activities a ON sc.activity_id = a.id 

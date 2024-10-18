@@ -1,26 +1,26 @@
 <?php
 
 
-// Check if the user is logged in
+
 if (!isset($_SESSION['user_id'])) {
     die("User is not logged in. Please log in first.");
 }
 
 $userId = $_SESSION['user_id'];
 
-// Include the database connection file
+
 include 'db.php';
 
-// Retrieve student_id and section_id from the URL
+
 $student_id = isset($_GET['student_id']) ? intval($_GET['student_id']) : 0;
 $section_id = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
 
-// Validate student_id
+
 if ($student_id <= 0) {
     die("Invalid student ID.");
 }
 
-// Fetch student details to display in the form
+
 $studentQuery = "SELECT * FROM students WHERE id = $student_id AND user_id = $userId";
 $result = mysqli_query($con, $studentQuery);
 
@@ -30,7 +30,7 @@ if (!$result || mysqli_num_rows($result) == 0) {
 
 $student = mysqli_fetch_assoc($result);
 
-// Handle the form submission to update the student
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $studentNumber = mysqli_real_escape_string($con, $_POST['student_number']);
     $studentName = mysqli_real_escape_string($con, $_POST['student_name']);

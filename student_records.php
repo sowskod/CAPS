@@ -1,18 +1,17 @@
 <?php
 
-// Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     die("User is not logged in. Please log in first.");
 }
 
 $userId = $_SESSION['user_id'];
 
-// Include the database connection file
+
 include 'db.php';
 
 $studentId = isset($_GET['student_id']) ? intval($_GET['student_id']) : 0;
 
-// Fetch the student's details
+
 $studentQuery = "SELECT id, student_name, section_id FROM students WHERE id = $studentId";
 $studentResult = mysqli_query($con, $studentQuery);
 
@@ -29,7 +28,7 @@ if ($studentRow) {
     die("Student not found.");
 }
 
-// Fetch the student's scores including timestamp
+
 $query = "
     SELECT a.activity_type, sc.score, a.total_score, sc.id AS score_id, sc.created_at
     FROM scores sc 
