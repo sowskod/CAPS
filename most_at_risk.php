@@ -1,6 +1,4 @@
 <?php
-
-
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     die("User is not logged in. Please log in first.");
@@ -24,20 +22,17 @@ require 'C:\xampp\htdocs\idrop\PHPMailer\src\SMTP.php';
 // Fetch section ID
 $sectionId = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
 
-// Fetch student records and calculate risk index, ordered by risk index descending
 $query = "SELECT students.id, students.student_name, students.email, 
             SUM(CASE WHEN activities.activity_type != 'attendance' THEN 1 ELSE 0 END) AS total_activities, 
-            SUM(CASE WHEN activities.activity_type = 'attendance' AND scores.score = 0 THEN 1 ELSE 0 END) AS absences, 
             SUM(CASE WHEN (scores.score / activities.total_score) < 0.5 AND activities.activity_type != 'attendance' THEN 1 ELSE 0 END) AS low_scores,
+            SUM(CASE WHEN activities.activity_type = 'attendance' AND scores.score = 0 THEN 1 ELSE 0 END) AS absences,
             SUM(CASE WHEN (scores.score / activities.total_score) >= 0.5 AND activities.activity_type != 'attendance' THEN 1 ELSE 0 END) AS high_scores
           FROM students
           LEFT JOIN scores ON students.id = scores.student_id
           LEFT JOIN activities ON scores.activity_id = activities.id
           WHERE students.user_id = $userId AND students.section_id = $sectionId
-          GROUP BY students.id
-          ORDER BY ((SUM(CASE WHEN (scores.score / activities.total_score) < 0.5 AND activities.activity_type != 'attendance' THEN 1 ELSE 0 END) / 
-                     NULLIF(SUM(CASE WHEN activities.activity_type != 'attendance' THEN 1 ELSE 0 END), 0)) * 0.7 + 
-                    (SUM(CASE WHEN activities.activity_type = 'attendance' AND scores.score = 0 THEN 1 ELSE 0 END) / 3) * 0.3) DESC";
+          GROUP BY students.id";
+
 
 $result = mysqli_query($con, $query);
 
@@ -197,11 +192,19 @@ if (!$result) {
                 <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2" />
 
                 <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg></a>
-        <br>
-        <br>
-        <br>
-        <br>
+            </svg></a> /* Your existing CSS styles */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a class="teacher-button" href="page.php?student&section_id=<?php echo htmlspecialchars($sectionId); ?>">
+            <svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2" />
+                <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </a>
+        <br><br><br><br>
         <table>
             <thead>
                 <tr>
@@ -215,24 +218,23 @@ if (!$result) {
                 <?php if (mysqli_num_rows($result) > 0): ?>
                     <?php while ($row = mysqli_fetch_assoc($result)): ?>
                         <?php
-                        // Compute the risk index as before
+                        // Get the computed values
                         $total_activities = $row['total_activities'];
                         $low_scores = $row['low_scores'];
                         $absences = $row['absences'];
+                        $high_scores = $row['high_scores'];
+                        
+                        // Call the Python script and get the predicted risk index
+                        $command = escapeshellcmd("python C:\\xampp\\htdocs\\idrop\\predict_risk.py $total_activities $low_scores $absences $high_scores");
 
-                        $low_score_threshold = 0.5;
-                        $absent_threshold = 3;
-                        $risk_index = 0;
-                        $risk_color = 'green';
+                        $predicted_risk_index = shell_exec($command);
+                        $predicted_risk_index = floatval($predicted_risk_index); // Convert to float for calculations
 
-                        if ($total_activities > 0) {
-                            $low_score_proportion = $low_scores / $total_activities;
-                            $risk_index = ($low_score_proportion * 0.7 + ($absences / $absent_threshold) * 0.3);
-                            $risk_color = $risk_index > 0.7 ? 'red' : ($risk_index > 0.4 ? 'orange' : 'green');
-                        }
+                        // Determine risk color based on predicted risk index
+                        $risk_color = $predicted_risk_index > 0.7 ? 'red' : ($predicted_risk_index > 0.4 ? 'orange' : 'green');
 
                         // Send email alert if risk index exceeds 70%
-                        if ($risk_index >= 0.7) {
+                        if ($predicted_risk_index >= 0.7) {
                             // Email alert function
                             $mail = new PHPMailer(true); {
                                 // Server settings
@@ -251,8 +253,8 @@ if (!$result) {
                                 // Content
                                 $mail->isHTML(false);
                                 $mail->Subject = "Risk Alert";
-                                $mail->Body    = "Dear " . htmlspecialchars($row['student_name']) . ",\n\n" .
-                                    "You are at risk with a risk level of " . round($risk_index * 100) . "%.\nPlease contact your counselor for assistance.";
+                                $mail->Body    = "Dear " . htmlspecialchars($row['student_name']) . ",\n\n" . 
+                                                 "You are at risk with a risk level of " . round($predicted_risk_index * 100) . "%.\nPlease contact your counselor for assistance.";
 
                                 $mail->send();
                             }
@@ -263,7 +265,7 @@ if (!$result) {
                             <td><?php echo htmlspecialchars($row["email"]); ?></td>
                             <td>
                                 <div class='risk-index <?php echo $risk_color; ?>'>
-                                    <?php echo round($risk_index * 100); ?>%
+                                    <?php echo round($predicted_risk_index * 100); ?>%
                                 </div>
                             </td>
                             <td>
@@ -279,15 +281,11 @@ if (!$result) {
                         <td colspan="4">No students found</td>
                     </tr>
                 <?php endif; ?>
-
             </tbody>
-
         </table>
         <a href="printmostatrisk.php?section_id=<?php echo htmlspecialchars($sectionId); ?>" class="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Print PDF</a>
-
     </div>
 </body>
-
 </html>
 
 <?php
