@@ -14,14 +14,14 @@ include 'db.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTPDebug;
 
-require __DIR__ . '/vendor/autoload.php'; // Adjust this path if necessary
 require 'C:\xampp\htdocs\idrop\PHPMailer\src\Exception.php';
 require 'C:\xampp\htdocs\idrop\PHPMailer\src\PHPMailer.php';
 require 'C:\xampp\htdocs\idrop\PHPMailer\src\SMTP.php';
 
 // Import required files
-require __DIR__ . '/vendor/autoload.php';
+
 
 // Fetch section ID
 $sectionId = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
