@@ -192,7 +192,6 @@ if (!$result) {
                 <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2" />
 
                 <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg></a> /* Your existing CSS styles */
     </style>
 </head>
 
