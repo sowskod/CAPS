@@ -293,7 +293,7 @@ ALTER TABLE `students`
   ADD KEY `section_id` (`section_id`),
   ADD KEY `fk_students_user` (`user_id`),
   ADD KEY `fk_subject_id` (`subject_id`);
-
+  ---ALTER TABLE students ADD student_number VARCHAR(255); use if add student number not working
 --
 -- Indexes for table `student_activities`
 --
