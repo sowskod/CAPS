@@ -42,9 +42,6 @@ if (!$result) {
     die("Query failed: " . mysqli_error($con));
 }
 
-if (mysqli_num_rows($result) === 0) {
-    echo "No records found.";
-}
 
 ?>
 
@@ -188,19 +185,24 @@ if (mysqli_num_rows($result) === 0) {
             </tr>
         </thead>
         <tbody>
-            <?php while ($row = mysqli_fetch_assoc($result)) : ?>
+            <?php if (mysqli_num_rows($result) > 0): ?>
+                <?php while ($row = mysqli_fetch_assoc($result)) : ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($row['activity_type']); ?></td>
+                        <td><?php echo htmlspecialchars($row['score']); ?></td>
+                        <td><?php echo htmlspecialchars($row['total_score']); ?></td>
+                        <td><?php echo htmlspecialchars(date('Y-m-d H:i:s', strtotime($row['created_at']))); ?></td>
+                        <td class="actions">
+                            <a href="page.php?student=records&edit_score=true&score_id=<?php echo htmlspecialchars($row['score_id']); ?>">Edit</a>
+                            <a href="delete_score.php?score_id=<?php echo htmlspecialchars($row['score_id']); ?>" class="delete" onclick="return confirm('Are you sure you want to delete this score?');">Delete</a>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            <?php else: ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($row['activity_type']); ?></td>
-                    <td><?php echo htmlspecialchars($row['score']); ?></td>
-                    <td><?php echo htmlspecialchars($row['total_score']); ?></td>
-                    <td><?php echo htmlspecialchars(date('Y-m-d H:i:s', strtotime($row['created_at']))); ?></td>
-                    <td class="actions">
-                        <a href="page.php?student=records&edit_score=true&score_id=<?php echo htmlspecialchars($row['score_id']); ?>">Edit</a>
-
-                        <a href="delete_score.php?score_id=<?php echo htmlspecialchars($row['score_id']); ?>" class="delete" onclick="return confirm('Are you sure you want to delete this score?');">Delete</a>
-                    </td>
+                    <td colspan="5">No records found</td>
                 </tr>
-            <?php endwhile; ?>
+            <?php endif; ?>
         </tbody>
     </table>
     <a href="print.php?student_id=<?php echo htmlspecialchars($studentId); ?>" class="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Print PDF</a>
