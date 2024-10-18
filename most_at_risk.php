@@ -17,7 +17,15 @@ if (!$con) {
 }
 // Fetch section ID
 $sectionId = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
-
+$sectionQuery = "SELECT * FROM sections WHERE id = ?";
+$sectionStmt = mysqli_prepare($con, $sectionQuery);
+mysqli_stmt_bind_param($sectionStmt, 'i', $sectionId);
+mysqli_stmt_execute($sectionStmt);
+$sectionResult = mysqli_stmt_get_result($sectionStmt);
+$section = mysqli_fetch_assoc($sectionResult);
+$sectionName = htmlspecialchars($section['section_name']);
+$sectionId = intval($section['id']);
+mysqli_stmt_close($sectionStmt);
 // Fetch student records and calculate risk index
 $query = "SELECT students.id, students.student_name, students.email, 
             SUM(CASE WHEN activities.activity_type != 'attendance' THEN 1 ELSE 0 END) AS total_activities, 
@@ -196,6 +204,8 @@ if (!$result) {
         <br>
         <br>
         <br>
+        <h2>Most at <span style="color: red;">RISK</span> in Section <?php echo htmlspecialchars($sectionName); ?></h2>
+
         <table>
             <thead>
                 <tr>

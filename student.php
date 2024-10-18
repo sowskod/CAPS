@@ -110,7 +110,7 @@ mysqli_stmt_close($scoresStmt);
 
         <form method="POST" action="page.php?student&section_id=<?php echo $sectionId; ?>">
             <h3>Add Activity</h3>
-            <label for="activity_type">Activity Type:</label>
+            <label for="activity_type" class="type">activity Type:</label>
             <select name="activity_type" id="activity_type" required>
                 <option value="quiz">Quiz</option>
                 <option value="exam">Exam</option>
@@ -124,6 +124,12 @@ mysqli_stmt_close($scoresStmt);
     </div>
     <div class="hits">
         <style>
+            .type {
+                color: gray;
+                font-size: 12px;
+                padding-left: 2px;
+            }
+
             .hits {
                 background-color: #E8F6F3;
                 padding: 20px;
