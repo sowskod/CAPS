@@ -1,3 +1,4 @@
+<link rel="icon" href="css/img/logo.ico">
 <style>
     #imeds {
         width: 440px;

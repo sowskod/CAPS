@@ -1,19 +1,36 @@
-# Python script to train the model (train_model.py)
 import pandas as pd
-from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-from sklearn.externals import joblib
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+import pickle
 
-# Example DataFrame: columns=['total_activities', 'absences', 'low_scores', 'high_scores', 'at_risk']
-data = pd.read_csv('trainmodel_data.csv')
+# Load the data
+data = pd.read_csv('train.csv')
 
-X = data[['total_activities', 'absences', 'low_scores', 'high_scores']]
-y = data['at_risk']  # Binary classification: 1 = "at risk", 0 = "not at risk"
+# Features (X) and target (y)
+X = data[['total_activities', 'absences', 'low_scores']]
+y = data['risk_index']
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-model = LogisticRegression()
+# Train the regression model
+model = LinearRegression()
 model.fit(X_train, y_train)
 
-# Save the trained model to a file
-joblib.dump(model, 'risk_model.pkl')
+# Predict on test data
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+# Print metrics
+print(f'Mean Squared Error: {mse:.2f}')
+print(f'R-squared Score: {r2:.2f}')
+
+# Save the model
+with open('risk_model.pkl', 'wb') as file:
+    pickle.dump(model, file)
+
+print("Model saved as 'risk_model.pkl'.")

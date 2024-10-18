@@ -11,25 +11,18 @@ $userId = $_SESSION['user_id'];
 // Include the database connection file
 include 'db.php';
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
 
-// Import required files
-require __DIR__ . '/vendor/autoload.php'; // Adjust this path if necessary
-require 'C:\xampp\htdocs\idrop\PHPMailer\src\Exception.php';
-require 'C:\xampp\htdocs\idrop\PHPMailer\src\PHPMailer.php';
-require 'C:\xampp\htdocs\idrop\PHPMailer\src\SMTP.php';
-
+if (!$con) {
+    die("Database connection failed: " . mysqli_connect_error());
+}
 // Fetch section ID
 $sectionId = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
 
-// Fetch student records and calculate risk index, ordered by risk index descending
+// Fetch student records and calculate risk index
 $query = "SELECT students.id, students.student_name, students.email, 
             SUM(CASE WHEN activities.activity_type != 'attendance' THEN 1 ELSE 0 END) AS total_activities, 
             SUM(CASE WHEN activities.activity_type = 'attendance' AND scores.score = 0 THEN 1 ELSE 0 END) AS absences, 
-            SUM(CASE WHEN (scores.score / activities.total_score) < 0.5 AND activities.activity_type != 'attendance' THEN 1 ELSE 0 END) AS low_scores,
-            SUM(CASE WHEN (scores.score / activities.total_score) >= 0.5 AND activities.activity_type != 'attendance' THEN 1 ELSE 0 END) AS high_scores
+            SUM(CASE WHEN (scores.score / activities.total_score) < 0.5 AND activities.activity_type != 'attendance' THEN 1 ELSE 0 END) AS low_scores
           FROM students
           LEFT JOIN scores ON students.id = scores.student_id
           LEFT JOIN activities ON scores.activity_id = activities.id
@@ -53,6 +46,7 @@ if (!$result) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Most at Risk Students</title>
+    <link rel="icon" href="css/img/logo.ico">
     <style>
         .container {
             background: #fff;
@@ -219,6 +213,9 @@ if (!$result) {
                         $total_activities = $row['total_activities'];
                         $low_scores = $row['low_scores'];
                         $absences = $row['absences'];
+                        $command = escapeshellcmd("python3 predict_risk.py $total_activities $absences $low_scores");
+                        $output = shell_exec($command);
+                        $risk_index = floatval($output);
 
                         $low_score_threshold = 0.5;
                         $absent_threshold = 3;
@@ -231,32 +228,7 @@ if (!$result) {
                             $risk_color = $risk_index > 0.7 ? 'red' : ($risk_index > 0.4 ? 'orange' : 'green');
                         }
 
-                        // Send email alert if risk index exceeds 70%
-                        if ($risk_index >= 0.7) {
-                            // Email alert function
-                            $mail = new PHPMailer(true); {
-                                // Server settings
-                                $mail->isSMTP();
-                                $mail->Host       = 'smtp.gmail.com';
-                                $mail->SMTPAuth   = true;
-                                $mail->Username   = 'dontdropassist@gmail.com'; // Replace with your email
-                                $mail->Password   = 'zzqz kqfl ijry wjec';  // Replace with your email password
-                                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                                $mail->Port       = 587;
 
-                                // Recipients
-                                $mail->setFrom('dontdropassist@gmail.com', 'Notification Service');
-                                $mail->addAddress($row['email']);
-
-                                // Content
-                                $mail->isHTML(false);
-                                $mail->Subject = "Risk Alert";
-                                $mail->Body    = "Dear " . htmlspecialchars($row['student_name']) . ",\n\n" .
-                                    "You are at risk with a risk level of " . round($risk_index * 100) . "%.\nPlease contact your counselor for assistance.";
-
-                                $mail->send();
-                            }
-                        }
                         ?>
                         <tr>
                             <td><?php echo htmlspecialchars($row["student_name"]); ?></td>
@@ -293,4 +265,7 @@ if (!$result) {
 <?php
 // Close the database connection
 mysqli_close($con);
+?>
+<?php
+include 'auto_send_alert.php';
 ?>

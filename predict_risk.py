@@ -1,22 +1,21 @@
 import sys
-import json
-import joblib
+import pandas as pd
+import pickle
 
-# Load the model
-model = joblib.load('risk_model.pkl')
+# Load the model from the file
+with open('risk_model.pkl', 'rb') as file:
+    model = pickle.load(file)
 
-# Get student data from PHP
-student_data = json.loads(sys.argv[1])
+# Get inputs from command line arguments
+total_activities = int(sys.argv[1])
+absences = int(sys.argv[2])
+low_scores = int(sys.argv[3])
 
-# Extract features
-X = [[
-    student_data['total_activities'],
-    student_data['absences'],
-    student_data['low_scores'],
-    student_data['high_scores']
-]]
+# Create a dataframe with the input values
+input_data = pd.DataFrame([[total_activities, absences, low_scores]], columns=['total_activities', 'absences', 'low_scores'])
 
-# Predict the risk index
-risk_prob = model.predict_proba(X)[0][1]  # Get probability of being "at risk"
+# Make a prediction
+risk_index = model.predict(input_data)[0]
 
-print(risk_prob)
+# Print the result (this will be captured by PHP)
+print(risk_index)

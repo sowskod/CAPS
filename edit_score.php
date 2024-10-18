@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Score</title>
+    <link rel="icon" href="css/img/logo.ico">
     <style>
         .container {
             background: #fff;

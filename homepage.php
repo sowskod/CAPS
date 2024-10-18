@@ -118,7 +118,7 @@ mysqli_close($con);
 
 <link rel="stylesheet" href="css\global.css">
 <link rel="stylesheet" href="css\homepage.css">
-
+<link rel="icon" href="css/img/logo.ico">
 <div class="wrapper">
     <div class="header">
         <h2>Dashboard</h2>

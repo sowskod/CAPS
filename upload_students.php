@@ -33,7 +33,7 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
             $rows = $worksheet->toArray();
 
             // Prepare to insert data
-            $stmt = $con->prepare("INSERT INTO students (user_id, section_id, student_name, email, courses, sections, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $con->prepare("INSERT INTO students (user_id, section_id, student_number, student_name, email) VALUES (?, ?, ?, ?, ?)");
 
             foreach ($rows as $index => $row) {
                 // Skip header row
@@ -41,12 +41,17 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
                     continue;
                 }
 
-                list($timestamp, $studentId, $studentName, $Gender, $email, $courses, $sections) = $row;
+                // Capture the row values, adjusting indices as needed
+                list($timestamp, $studentNumber, $studentName, $email) = $row;
 
                 // Bind parameters and execute query
-                $stmt->bind_param('iisssss', $userId, $sectionId, $studentName, $email, $courses, $sections, $timestamp);
-                $stmt->execute();
+                $stmt->bind_param('iisss', $userId, $sectionId, $studentNumber, $studentName, $email); 
+                if (!$stmt->execute()) {
+                    echo "Error inserting student: " . $stmt->error; 
+                }
             }
+
+
 
             echo '<script>alert("Students uploaded successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
         } catch (Exception $e) {
