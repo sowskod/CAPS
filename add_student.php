@@ -31,15 +31,14 @@ if ($row['count'] == 0) {
 // Handle student addition
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_student'])) {
     // Get the form data and sanitize it
+    $studentNumber = mysqli_real_escape_string($con, $_POST['student_number']);
     $studentName = mysqli_real_escape_string($con, $_POST['student_name']);
     $studentEmail = mysqli_real_escape_string($con, $_POST['student_email']);
-    $cpNumber = mysqli_real_escape_string($con, $_POST['cp_number']);
-    $program = mysqli_real_escape_string($con, $_POST['program']);
-    $course = mysqli_real_escape_string($con, $_POST['course']);
+
 
     // SQL query to insert the data into the students table
-    $query = "INSERT INTO students (user_id, section_id, student_name, email, cp_number, program, course) 
-              VALUES ($userId, $sectionId, '$studentName', '$studentEmail', '$cpNumber', '$program', '$course')";
+    $query = "INSERT INTO students (user_id, section_id, student_number, student_name, email) 
+              VALUES ($userId, $sectionId,'$studentNumber', '$studentName', '$studentEmail')";
 
     if (mysqli_query($con, $query)) {
         echo '<script>alert("Student added successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
@@ -56,9 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_student'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Student</title>
+    <link rel="icon" href="css/img/logo.ico">
     <style>
-       
-       .container {
+        .container {
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -117,39 +116,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_student'])) {
         .back-button a:hover {
             text-decoration: underline;
         }
+
         .teacher-button {
-    position: absolute;
-    top: 20px;
-    left: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 60px; 
-    height: 80px; 
-    background: linear-gradient(135deg, #B2DFDB, #00796B); 
-    border-radius: 12px; 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
-    text-decoration: none; 
-    transition: transform 0.2s, box-shadow 0.2s;
-}
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 60px;
+            height: 80px;
+            background: linear-gradient(135deg, #B2DFDB, #00796B);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
 
-.teacher-button:hover {
-    transform: translateY(-3px); 
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); 
-}
+        .teacher-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
 
-.teacher-button svg {
-    transition: fill 0.2s; 
-}
+        .teacher-button svg {
+            transition: fill 0.2s;
+        }
 
-.teacher-button:hover svg circle {
-    fill: #E8F6F3; 
-}
+        .teacher-button:hover svg circle {
+            fill: #E8F6F3;
+        }
 
-.teacher-button:hover svg path {
-    stroke: #E8F6F3; 
-}
+        .teacher-button:hover svg path {
+            stroke: #E8F6F3;
+        }
 
+        p {
+            color: lightslategrey;
+        }
     </style>
 </head>
 
@@ -157,28 +160,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_student'])) {
     <div class="container">
         <div class="back-button">
             <a class="teacher-button" href="page.php?student&section_id=<?php echo htmlspecialchars($sectionId); ?>"> <svg width="54" height="74" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      
-        <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2"/>
-     
-        <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg></a>
-    <br>
-    <br>
-    <br>
-    <br>
+
+                    <circle cx="12" cy="12" r="10" fill="#E8F6F3" stroke="#00796B" stroke-width="2" />
+
+                    <path d="M8 12H16M8 12L12 8M8 12L12 16" stroke="#00796B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg></a>
+            <br>
+            <br>
+            <br>
+            <br>
         </div>
         <h2>Add New Student</h2>
         <form method="POST" action="">
             <input type="hidden" name="section_id" value="<?php echo htmlspecialchars($sectionId); ?>">
 
-            <label for="studentnumber">Student No:</label>
-            <input type="text" id="studentnumber" name="studentnumber" required>
+            <label for="student_number">Student No:</label>
+            <input type="text" id="student_number" name="student_number" placeholder="Enter Student Number" required>
 
-            <label for="student_name">Student Name:</label>
-            <input type="text" id="student_name" name="student_name" required>
+            <label for="student_name">Student Name:<p>Surname, First Name MI</p></label>
+            <input type="text" id="student_name" name="student_name" placeholder="Enter Student Name" required>
 
             <label for="student_email">Student Email:</label>
-            <input type="email" id="student_email" name="student_email" required>
+            <input type="email" id="student_email" name="student_email" placeholder="Enter Student Email" required>
 
             <button type="submit" name="add_student">Add Student</button>
         </form>

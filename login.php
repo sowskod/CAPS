@@ -1,4 +1,4 @@
-
+<link rel="icon" href="css/img/logo.ico">
 <?php
 session_start(); // Start the session
 

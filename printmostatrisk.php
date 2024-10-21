@@ -59,7 +59,7 @@ $html = '
             <th>Student Name</th>
             <th>Email</th>
             <th>Risk Index</th>
-            <th>Actions</th>
+           
         </tr>
     </thead>
     <tbody>';
@@ -92,9 +92,7 @@ if (mysqli_num_rows($result) > 0) {
                             ' . round($risk_index * 100) . '% 
                         </div>
                     </td>
-                    <td>
-                        <button style="background-color: #3498db; color: #fff; border: none; padding: 5px; border-radius: 4px;">Send Alert</button>
-                    </td>
+                  
                 </tr>';
     }
 } else {
@@ -111,4 +109,3 @@ $pdf->Output('most_at_risk_students.pdf', 'I'); // 'I' for inline display in bro
 
 // Close the database connection
 mysqli_close($con);
-?>

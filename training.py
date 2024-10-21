@@ -6,7 +6,7 @@ from sklearn.metrics import r2_score
 import joblib  # Import joblib for saving the model
 
 # Load your dataset
-data = pd.read_csv('sdata.csv')
+data = pd.read_csv('sdata_with_risk_percentage.csv')
 
 # Define features and target variable
 X = data[['total_activities', 'absences', 'low_scores', 'high_scores']]

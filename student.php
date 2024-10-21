@@ -1,5 +1,5 @@
 <?php
-include 'score_update.php'; // Include the score update logic
+include 'score_update.php';
 
 if (!isset($_SESSION['user_id'])) {
     die("User is not logged in. Please log in first.");
@@ -10,11 +10,12 @@ $sectionId = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_student'])) {
+        $studentNumber = mysqli_real_escape_string($con, $_POST['student_number']);
         $studentName = mysqli_real_escape_string($con, $_POST['student_name']);
         $studentEmail = mysqli_real_escape_string($con, $_POST['student_email']);
-        $query = "INSERT INTO students (user_id, section_id, student_name, email) VALUES (?, ?, ?, ?)";
+        $query = "INSERT INTO students (user_id, student_number, student_name, email) VALUES (?, ?, ?, ?)";
         $stmt = mysqli_prepare($con, $query);
-        mysqli_stmt_bind_param($stmt, 'iiss', $userId, $sectionId, $studentName, $studentEmail);
+        mysqli_stmt_bind_param($stmt, 'iiss', $userId, $studentNumber, $studentName, $studentEmail);
 
         if (mysqli_stmt_execute($stmt)) {
             echo '<script>alert("Student added successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
@@ -84,6 +85,7 @@ mysqli_stmt_close($scoresStmt);
 ?>
 
 <link rel="stylesheet" href="css/student.css">
+
 <div id="notification" style="display:none; position:sticky; top:0; left:50%; top: 20px; background-color:#4CAF50; color:white; padding:10px; z-index:1000;">Scores saved successfully!</div>
 
 <a href="page.php" class="teacher-button">
@@ -108,7 +110,7 @@ mysqli_stmt_close($scoresStmt);
 
         <form method="POST" action="page.php?student&section_id=<?php echo $sectionId; ?>">
             <h3>Add Activity</h3>
-            <label for="activity_type">Activity Type:</label>
+            <label for="activity_type" class="type">activity Type:</label>
             <select name="activity_type" id="activity_type" required>
                 <option value="quiz">Quiz</option>
                 <option value="exam">Exam</option>
@@ -121,6 +123,79 @@ mysqli_stmt_close($scoresStmt);
         </form>
     </div>
     <div class="hits">
+        <style>
+            .type {
+                color: gray;
+                font-size: 12px;
+                padding-left: 2px;
+            }
+
+            .hits {
+                background-color: #E8F6F3;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                margin-top: 20px;
+            }
+
+            h1 {
+                color: #4CAF50;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            ol {
+
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                margin: 0 auto;
+                padding: 25px 50px;
+                padding-left: 50px;
+                margin-bottom: 20px;
+
+            }
+
+            li {
+                margin-bottom: 15px;
+                font-size: 20px;
+            }
+
+            a {
+                color: #007BFF;
+                text-decoration: none;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .footer {
+                color: gray;
+                text-align: center;
+                margin-top: 20px;
+                font-size: 14px;
+            }
+        </style>
+
+        <h1>Instructions for Uploading Students via Excel</h1>
+        <ol>
+            <li>
+                Go to the link and make a copy of your form:
+                <a href="https://docs.google.com/forms/d/1xmoafAtRgYG48hRnGRLs7L3dw-sIxJK4Aa1oIZ-roac/copy" target="_blank">Google Form Link</a>
+            </li>
+            <li>
+                After creating your own form, send it to your student class.
+            </li>
+            <li>
+                Once all students have answered the form, download the responses as an Excel file.
+            </li>
+        </ol>
+        <h3>That's it! Upload the Excel file as needed.</h3>
+
+        <div class="footer">
+            <h3>Thank you for your cooperation!</h3>
+        </div>
     </div>
 </div>
 
@@ -130,6 +205,7 @@ mysqli_stmt_close($scoresStmt);
         <table>
             <thead>
                 <tr>
+                    <th>STUDENT NO:</th>
                     <th>FULLNAME (Surname, Firstname MI)</th>
                     <th>Email</th>
                     <?php
@@ -147,6 +223,7 @@ mysqli_stmt_close($scoresStmt);
                 while ($student = mysqli_fetch_assoc($studentsResult)) :
                 ?>
                     <tr>
+                        <td><?php echo htmlspecialchars($student['student_number']); ?></td>
                         <td style="text-wrap: nowrap;"><?php echo htmlspecialchars($student['student_name']); ?></td>
                         <td><?php echo htmlspecialchars($student['email']); ?></td>
                         <?php

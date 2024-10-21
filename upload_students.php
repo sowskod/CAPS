@@ -4,49 +4,53 @@ require 'vendor/autoload.php'; // Load Composer dependencies
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 session_start();
-
-// Check if the user is logged in
+  
 if (!isset($_SESSION['user_id'])) {
     die("User is not logged in. Please log in first.");
 }
 
 $userId = $_SESSION['user_id'];
 
-// Include the database connection file
-include 'db.php'; // Ensure this file contains the database connection code
 
-// Fetch section ID from the query string
+include 'db.php'; 
+
+
 $sectionId = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
 
-// Check if a file was uploaded
+
 if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
     $fileTmpPath = $_FILES['file']['tmp_name'];
     $fileType = $_FILES['file']['type'];
 
-    // Validate file type
+    
     $allowedMimeTypes = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'];
     if (in_array($fileType, $allowedMimeTypes)) {
         try {
-            // Load the Excel file
+          
             $spreadsheet = IOFactory::load($fileTmpPath);
             $worksheet = $spreadsheet->getActiveSheet();
             $rows = $worksheet->toArray();
 
-            // Prepare to insert data
-            $stmt = $con->prepare("INSERT INTO students (user_id, section_id, student_name, email, courses, sections, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?)");
+           
+            $stmt = $con->prepare("INSERT INTO students (user_id, section_id, student_number, student_name, email) VALUES (?, ?, ?, ?, ?)");
 
             foreach ($rows as $index => $row) {
-                // Skip header row
+                
                 if ($index === 0 || empty($row[0])) {
                     continue;
                 }
 
-                list($timestamp, $studentId, $studentName, $Gender, $email, $courses, $sections) = $row;
+                
+                list($timestamp, $studentNumber, $studentName, $email) = $row;
 
-                // Bind parameters and execute query
-                $stmt->bind_param('iisssss', $userId, $sectionId, $studentName, $email, $courses, $sections, $timestamp);
-                $stmt->execute();
+               
+                $stmt->bind_param('iisss', $userId, $sectionId, $studentNumber, $studentName, $email);
+                if (!$stmt->execute()) {
+                    echo "Error inserting student: " . $stmt->error;
+                }
             }
+
+
 
             echo '<script>alert("Students uploaded successfully!");window.location.href = "page.php?student&section_id=' . $sectionId . '";</script>';
         } catch (Exception $e) {
