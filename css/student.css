@@ -186,10 +186,10 @@ th {
   border-collapse: collapse;
 }
 .toppart {
-  background-color: #f8f9fa; 
+  background-color: #f8f9fa;
   padding: 20px;
-  border-radius: 8px; 
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .configs {
@@ -210,14 +210,15 @@ th {
   text-decoration: none;
   border-radius: 5px;
   transition: background-color 0.3s;
+  height: 50px;
 }
 
 .add-student-form:hover {
-  background-color: #0056b3; 
+  background-color: #0056b3;
 }
 
 .view {
-  background-color: #28a745; 
+  background-color: #28a745;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -227,7 +228,7 @@ th {
 }
 
 .view:hover {
-  background-color: #218838; 
+  background-color: #218838;
 }
 
 .upload-form,
@@ -240,8 +241,8 @@ th {
 }
 
 label {
-  display: block; 
-  margin-bottom: 5px; 
+  display: block;
+  margin-bottom: 5px;
   font-weight: bold;
 }
 
@@ -251,9 +252,9 @@ select {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ced4da; 
-  border-radius: 4px; 
-  box-sizing: border-box; 
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
 button {

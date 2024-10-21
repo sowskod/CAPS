@@ -65,6 +65,19 @@ if (!$studentsResult) {
     die("Error fetching students: " . mysqli_error($con));
 }
 
+// Count the number of activities for this section and user
+$activityCountQuery = "SELECT COUNT(*) AS activity_count FROM activities WHERE section_id = ? AND user_id = ?";
+$activityCountStmt = mysqli_prepare($con, $activityCountQuery);
+mysqli_stmt_bind_param($activityCountStmt, 'ii', $sectionId, $userId);
+mysqli_stmt_execute($activityCountStmt);
+$activityCountResult = mysqli_stmt_get_result($activityCountStmt);
+$activityCountRow = mysqli_fetch_assoc($activityCountResult);
+$activityCount = $activityCountRow['activity_count'];
+mysqli_stmt_close($activityCountStmt);
+
+// Determine whether to show the "View MOST at Risk" button based on activity count
+$showMostAtRiskButton = ($activityCount >= 4);
+
 $activitiesQuery = "SELECT * FROM activities WHERE section_id = ? AND user_id = ?";
 $activitiesStmt = mysqli_prepare($con, $activitiesQuery);
 mysqli_stmt_bind_param($activitiesStmt, 'ii', $sectionId, $userId);
@@ -99,7 +112,17 @@ mysqli_stmt_close($scoresStmt);
     <div class="configs">
         <div class="mainbtns">
             <a href="page.php?student=add_student&section_id=<?php echo htmlspecialchars($sectionId); ?>" class="add-student-form">Add New Student</a>
-            <button type="button" onclick="window.location.href='page.php?student=most_at_risk&section_id=<?php echo $sectionId; ?>'" class="view">View MOST at Risk</button>
+
+            <?php if ($showMostAtRiskButton): ?>
+                <button type="button" onclick="window.location.href='page.php?student=most_at_risk&section_id=<?php echo $sectionId; ?>'" class="view">View MOST at Risk</button>
+            <?php else: ?>
+
+                <div class="slidedown">
+                    <p><span style="color:gray;">Add at least 4 activities to view the MOST at Risk.</span></p>
+                    <button type="button" onclick="window.location.href='page.php?student=most_at_risk&section_id=<?php echo $sectionId; ?>'" class="view" style="background-color:gray;" disabled>View MOST at Risk</button>
+                </div>
+
+            <?php endif; ?>
         </div>
 
         <form method="POST" action="upload_students.php?section_id=<?php echo $sectionId; ?>" enctype="multipart/form-data">
@@ -175,6 +198,15 @@ mysqli_stmt_close($scoresStmt);
                 text-align: center;
                 margin-top: 20px;
                 font-size: 14px;
+            }
+
+            .slidedown {
+                display: flex;
+                gap: 5px;
+                flex-direction: column;
+                align-items: center;
+                width: 205px;
+                text-align: center;
             }
         </style>
 
